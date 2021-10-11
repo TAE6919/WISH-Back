@@ -30,7 +30,6 @@ const contentSchema = new Schema({
 
   createdAt: {
     type: Date,
-    default: Date.now,
   },
 
   Like: [likeSchema],

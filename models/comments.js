@@ -13,8 +13,8 @@ const commentSchema = new Schema({
   },
   createdAt: {
     type: Date,
+    required: true,
   },
 });
 
-const Comment = mongoose.model('Comment', commentSchema);
-export default { Comment };
+export default mongoose.model('Comment', commentSchema);
