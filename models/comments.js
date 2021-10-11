@@ -3,13 +3,12 @@ import mongoose from "mongoose"
 const { Schema } = mongoose
 
 const commentSchema = new Schema({
-  authorID: {
-    type: String,
-  },
+  postingID: { type: Schema.Types.ObjectId },
+  authorID: { type: Schema.Types.ObjectId },
   authorName: {
     type: String,
   },
-  content: {
+  text: {
     type: String,
   },
   createdAt: {
