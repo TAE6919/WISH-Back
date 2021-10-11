@@ -1,0 +1,125 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: node home Work
+  description: node home work api 설계
+
+servers:
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  - description: node home-work
+    url: http://localhost:3000
+paths:
+  /api/user/regist:
+    post:
+      summary: regist
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                userEmail:
+                  type: string
+                userNickName:
+                  type: string
+                userPassword:
+                  type: string
+                userConfrimPassword:
+                  type: string
+              example: # Sample object
+                userEmail: test5@test5.com
+                userNickName: test5
+                userPassword: test5
+                userConfrimPassword: test5
+      responses:
+        '200':
+          description: OK
+  /api/user/auth:
+    post:
+      summary: auth
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                userEmail:
+                  type: string
+                userPassword:
+                  type: string
+              example: # Sample object
+                userEmail: test5@test5.com
+                userPassword: test5
+
+      responses:
+        '200':
+          description: OK
+
+  /api/crud:
+    post:
+      security:
+        - bearerAuth: []
+      summary: create Page
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                content:
+                  type: string
+                title:
+                  type: string
+              example: # Sample object
+                content: 글 내용
+                title: 글 제목
+      responses:
+        '200':
+          description: OK
+  /api/crud/up:
+    put:
+      summary: update crud
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+                userContent:
+                  type: string
+              example: # Sample object
+                id: 615ea06586000c835db0e14b
+                title: 글 제목
+                userContent: 글 내용
+      responses:
+        '200':
+          description: OK
+  /api/crud/del:
+    delete:
+      summary: delete crud
+      requestBody:
+        content:
+          application/json:
+            schema: # Request body contents
+              type: object
+              properties:
+                id:
+                  type: string
+              example: # Sample object
+                id: 615ea06586000c835db0e14b
+
+      responses:
+        '200':
+          description: OK
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
