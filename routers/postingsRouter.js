@@ -5,6 +5,7 @@ import {
   getOnePosting,
   patchPosting,
   deletePosting,
+<<<<<<< HEAD
 } from '../controller/postings.js';
 import {
   createComments,
@@ -12,6 +13,10 @@ import {
   editComments,
   deleteComments,
 } from '../controller/comments.js';
+=======
+  postLike,
+} from "../controller/postings.js";
+>>>>>>> postings
 // import { authMiddleware } from '../middlewares/authMiddleware.js';
 const postingRouter = express.Router();
 
@@ -23,11 +28,17 @@ postingRouter
   .delete(deletePosting)
   .patch(patchPosting);
 
+<<<<<<< HEAD
 postingRouter
   .route('/:postingId/comments')
   .post(createComments)
   .get(getAllComments)
   .patch(editComments)
   .delete(deleteComments);
+=======
+postingRouter.route("/:id/like").post(postLike);
+
+postingRouter.route("/:id/comments");
+>>>>>>> postings
 
 export default postingRouter;
