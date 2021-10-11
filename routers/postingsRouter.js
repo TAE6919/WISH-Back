@@ -5,6 +5,7 @@ import {
   getOnePosting,
   patchPosting,
   deletePosting,
+  postLike,
 } from "../controller/postings.js";
 // import { authMiddleware } from '../middlewares/authMiddleware.js';
 const postingRouter = express.Router();
@@ -16,6 +17,8 @@ postingRouter
   .get(getOnePosting)
   .delete(deletePosting)
   .patch(patchPosting);
+
+postingRouter.route(":id/like").post(postLike);
 
 postingRouter.route("/:id/comments");
 
