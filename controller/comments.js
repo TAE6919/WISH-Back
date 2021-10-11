@@ -1,0 +1,1 @@
+const postPosting = (req, res) => {};
