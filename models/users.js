@@ -1,21 +1,22 @@
 import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
+const userSchema = new Schema({
+  email: {
+    type: String,
+  },
+  password: {
+    type: String,
+  },
 
-const commentSchema = new Schema({
-  authorID: {
+  nick: {
     type: String,
   },
-  authorName: {
-    type: String,
-  },
-  content: {
-    type: String,
-  },
+
   createdAt: {
     type: Date,
+    default: Date.now,
   },
 });
 
-const Comment = mongoose.model('Comment', commentSchema);
-export default { Comment };
+export default mongoose.model('User', userSchema);
