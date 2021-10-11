@@ -33,9 +33,9 @@ paths:
                 password: test5
                 confirmPassword: test5
       responses:
-        '200':
+        "200":
           description: 성공
-        '401':
+        "401":
           description: 실패
   /api/users/auth:
     post:
@@ -54,9 +54,9 @@ paths:
                 email: test5@test5.com
                 password: test5
       responses:
-        '201':
+        "201":
           description: 성공
-        '401':
+        "401":
           description: 실패
 
   /api/postings:
@@ -81,16 +81,16 @@ paths:
                 imageUrl: 이미지
                 text: 글 내용
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
     get:
       summary: 게시글 전체 조회
       response:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
 
   /api/users/{userId}:
@@ -102,9 +102,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
 
   /api/postings/{postingId}:
@@ -118,9 +118,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
     patch:
       # security:
@@ -148,9 +148,9 @@ paths:
                 title: 글 내용
                 text: 글 내용
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
     get:
       # security:
@@ -162,9 +162,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
   /api/postings/{postingId}/like:
     post:
@@ -175,9 +175,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
   /api/postings/{postingId}/comments:
     post:
@@ -201,9 +201,9 @@ paths:
               example: # Sample object
                 text: 글 내용
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
     get:
       # security:
@@ -215,9 +215,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
     patch:
       # security:
@@ -239,9 +239,9 @@ paths:
               example: # Sample object
                 text: 글 내용
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
     delete:
       # security:
@@ -253,9 +253,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: 성공
-        '400':
+        "400":
           description: 실패
 # components:
 #   securitySchemes:
