@@ -18,7 +18,7 @@ postingRouter
   .delete(deletePosting)
   .patch(patchPosting);
 
-postingRouter.route(":id/like").post(postLike);
+postingRouter.route("/:id/like").post(postLike);
 
 postingRouter.route("/:id/comments");
 

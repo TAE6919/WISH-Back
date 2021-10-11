@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
@@ -35,6 +35,6 @@ const contentSchema = new Schema({
 
   Like: [likeSchema],
 });
-const Content = mongoose.model('Content', contentSchema);
-const Like = mongoose.model('Like', likeSchema);
+const Like = mongoose.model("Like", likeSchema);
+const Content = mongoose.model("Content", contentSchema);
 export { Content, Like };

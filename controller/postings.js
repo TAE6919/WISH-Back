@@ -1,10 +1,14 @@
-import User from "../models/users.js";
+// import User from "../models/users.js";
 import { Content, Like } from "../models/postings.js";
 import mongoose from "mongoose";
 // 게시물 생성(CREATE)
 
 export const postPostings = async (req, res) => {
   const { title, imageUrl, text } = req.body;
+  // const { userId, nick } = req.user;
+
+  const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
+  const nick = "John Doe";
   // const { userId } = req.cookies;
 
   try {
@@ -12,8 +16,8 @@ export const postPostings = async (req, res) => {
     // const user = await User.findById(userId);
 
     const posting = {
-      authorID: mongoose.Types.ObjectId(429490000),
-      authorName: "asdfsdfsa",
+      authorID: userId,
+      authorName: nick,
       imageUrl,
       title,
       text,
@@ -55,11 +59,21 @@ export const getOnePosting = async (req, res) => {
 export const patchPosting = async (req, res) => {
   const { postingId } = req.params;
   const { imageUrl, title, text } = req.body;
+  const { userId, nick } = req.user;
 
   try {
-    await Content.findByIdAndUpdate(postingId, {
-      $set: { imageUrl, title, text },
-    });
+    const posting = await Content.findById(postingId);
+    // 토큰 id랑 해당 게시물의 작성자 id 비교
+    if (userId !== posting.authorID) return res.sendStatus(400);
+
+    posting.imageUrl = imageUrl;
+    posting.title = title;
+    posting.text = text;
+
+    await posting.save();
+    // await Content.findByIdAndUpdate(postingId, {
+    //   $set: { imageUrl, title, text },
+    // });
 
     return res.sendStatus(200);
   } catch (err) {
@@ -70,8 +84,8 @@ export const patchPosting = async (req, res) => {
 
 // 특정 게시물을 삭제
 export const deletePosting = async (req, res) => {
-  // const { postingId } = req.params;
-  const postingId = mongoose.Types.ObjectId("6163f627fd74d1cbe34d8f0b");
+  const { postingId } = req.params;
+  // const postingId = mongoose.Types.ObjectId("6163f627fd74d1cbe34d8f0b");
   try {
     await Content.findByIdAndDelete(postingId);
     return res.sendStatus(200);
@@ -81,29 +95,46 @@ export const deletePosting = async (req, res) => {
   }
 };
 
+//좋아요
 export const postLike = async (req, res) => {
-  const { postingId } = req.params;
-  const { userId } = req.cookies;
+  const postingId = req.params.id;
+  // const { userId } = req.user;
 
+  const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
+  const temp = mongoose.Types.ObjectId("c2f93bc87aa222bd5bb7a4e2");
   try {
     // 해당 사용자가 좋아요를 눌렀는지 확인
     const posting = await Content.findById(postingId);
-    posting.Like.forEach((user) => {
-      //userId로 사용자 검색
-      if (user.likedUser === userId) {
-        // 사용자가 있으면 배열에서 빼고
-        await posting.updateOne(posting, {
-          $pull: { Like: { LikedUser: userId } },
-        });
-      } else {
-        // 아니면 배열에 사용자 id를 push
-        await posting.updateOne(posting, {
-          $push: { Like: { LikedUser: userId } },
-        });
-      }
+
+    //해당 포스팅의 Like 배열 likedUser 속성이 userId랑 같은 것이 있는지 찾는다.
+    const result = await Content.find({
+      $and: [
+        { _id: postingId },
+        {
+          Like: {
+            $elemMatch: { likedUser: userId },
+          },
+        },
+      ],
     });
+
+    if (result.length === 0) {
+      await Content.updateOne(posting, {
+        $push: {
+          Like: { likedUser: userId },
+        },
+      });
+    } else {
+      await Content.updateOne(posting, {
+        $pull: {
+          Like: { likedUser: userId },
+        },
+      });
+    }
+
     // 좋아요 표시할 땐 배열 길이를 찍으면 됨.
-    return res.sendStatus(200);
+    const likeCount = posting.Like.length;
+    return res.status(200).send({ posting, likeCount });
   } catch (err) {
     console.log(err);
     return res.sendStatus(400);
