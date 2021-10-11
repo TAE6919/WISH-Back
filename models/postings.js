@@ -19,7 +19,7 @@ const contentSchema = new Schema({
     required: true,
   },
 
-  imageURL: {
+  imageUrl: {
     type: String,
     required: true,
   },
