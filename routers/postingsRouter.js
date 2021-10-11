@@ -1,12 +1,12 @@
-import express from 'express';
+import express from "express";
 
 // import { authMiddleware } from '../middlewares/authMiddleware.js';
 const postingRouter = express.Router();
 
-postingRouter.route('/');
+postingRouter.route("/").get();
 
-postingRouter.route('/:id');
+postingRouter.route("/:id");
 
-postingRouter.route('/:id/comments');
+postingRouter.route("/:id/comments");
 
 export default postingRouter;
