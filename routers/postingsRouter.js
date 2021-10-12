@@ -1,22 +1,18 @@
-import express from "express";
+import express from "express"
 import {
   getAllPostings,
   postPostings,
   getOnePosting,
   patchPosting,
   deletePosting,
-} from "../controller/postings.js";
-// import { authMiddleware } from '../middlewares/authMiddleware.js';
-const postingRouter = express.Router();
+} from "../controller/postings.js"
 
-postingRouter.route("/").get(getAllPostings).post(postPostings);
+const postingRouter = express.Router()
 
-postingRouter
-  .route("/:id")
-  .get(getOnePosting)
-  .delete(deletePosting)
-  .patch(patchPosting);
+postingRouter.route("/").get(getAllPostings).post(postPostings)
 
-postingRouter.route("/:id/comments");
+postingRouter.route("/:id").get(getOnePosting).delete(deletePosting).patch(patchPosting)
 
-export default postingRouter;
+postingRouter.route("/:id/comments")
+
+export default postingRouter

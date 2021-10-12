@@ -9,12 +9,11 @@ export const authMiddleware = async (req, res, next) => {
 
   if (tokenType !== "Bearer") return res.status(400).send({ msg: "로그인 후 사용하세요." })
   try {
-    const { userId, nickname } = jwt.verify(tokenValue, SECRET_KET)
+    const { userId } = jwt.verify(tokenValue, SECRET_KET)
 
     const user = await User.findById(userId)
-    const nickname = await User.findOne(nickname)
 
-    req.user = { user, nickname }
+    req.user = user
     next()
   } catch (error) {
     return res.status(400).send({ msg: "로그인이 필요한 기능입니다!" })
