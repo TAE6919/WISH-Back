@@ -1,15 +1,16 @@
-// import User from "../models/users.js";
 import { Content, Like } from "../models/postings.js";
 import mongoose from "mongoose";
-// 게시물 생성(CREATE)
 
+//테스트용
+const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
+const temp = mongoose.Types.ObjectId("c2f93bc87aa222bd5bb7a4e2");
+const nick = "John Doe";
+const postingId = mongoose.Types.ObjectId("6163f627fd74d1cbe34d8f0b");
+
+// 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
   const { title, imageUrl, text } = req.body;
-  // const { userId, nick } = req.user;
-
-  const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
-  const nick = "John Doe";
-  // const { userId } = req.cookies;
+  // const { userId } = req.user;
 
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
@@ -59,7 +60,7 @@ export const getOnePosting = async (req, res) => {
 export const patchPosting = async (req, res) => {
   const { postingId } = req.params;
   const { imageUrl, title, text } = req.body;
-  const { userId, nick } = req.user;
+  // const { userId } = req.user;
 
   try {
     const posting = await Content.findById(postingId);
@@ -84,10 +85,15 @@ export const patchPosting = async (req, res) => {
 
 // 특정 게시물을 삭제
 export const deletePosting = async (req, res) => {
-  const { postingId } = req.params;
-  // const postingId = mongoose.Types.ObjectId("6163f627fd74d1cbe34d8f0b");
+  // const { postingId } = req.params;
+  const userId = req.user;
+
   try {
-    await Content.findByIdAndDelete(postingId);
+    const posting = await Content.findById(postingId);
+
+    if (posting.authorID !== userId) return res.sendStatus(400);
+    // const posting = await Content.findByIdAndDelete(postingId);
+    await Content.deleteOne(posting);
     return res.sendStatus(200);
   } catch (err) {
     console.log(err);
@@ -100,8 +106,6 @@ export const postLike = async (req, res) => {
   const postingId = req.params.id;
   // const { userId } = req.user;
 
-  const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
-  const temp = mongoose.Types.ObjectId("c2f93bc87aa222bd5bb7a4e2");
   try {
     // 해당 사용자가 좋아요를 눌렀는지 확인
     const posting = await Content.findById(postingId);

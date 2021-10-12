@@ -5,6 +5,7 @@ import {
   getOnePosting,
   patchPosting,
   deletePosting,
+  postLike,
 } from "../controller/postings.js";
 import {
   createComments,
@@ -18,10 +19,12 @@ const postingRouter = express.Router();
 postingRouter.route("/").get(getAllPostings).post(postPostings);
 
 postingRouter
-  .route("/:id")
+  .route("/:postingId")
   .get(getOnePosting)
   .delete(deletePosting)
   .patch(patchPosting);
+
+postingRouter.route("/:postingId/like").post(postLike);
 
 postingRouter
   .route("/:postingId/comments")
