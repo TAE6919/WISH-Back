@@ -1,4 +1,6 @@
 import { Content } from '../models/postings.js';
+
+//user의 profile을 가져오기
 export const getUserProfile = async (req, res) => {
   const { userId } = req.params;
   try {
