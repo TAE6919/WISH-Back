@@ -1,9 +1,9 @@
-import express from 'express';
-import swaggerUi from 'swagger-ui-express';
-import yamljs from 'yamljs';
-import postingsRouter from './routers/postingsRouter.js';
-import usersRouter from './routers/usersRouter.js';
-import db from './db.js';
+const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const yamljs = require('yamljs');
+const postingsRouter = require('./routers/postingsRouter.js');
+const usersRouter = require('./routers/usersRouter.js');
+
 const app = express();
 const PORT = 4000;
 const swaggerDocument = yamljs.load('./api/api.yaml');

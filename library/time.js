@@ -1,4 +1,4 @@
-export const nowDate = () => {
+const datenow = () => {
   var date = new Date();
   var year = date.getFullYear();
   var month = date.getMonth();
@@ -11,3 +11,5 @@ export const nowDate = () => {
     Date.UTC(year, month, today, hours, minutes, seconds, milliseconds)
   );
 };
+
+module.exports = datenow;

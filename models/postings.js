@@ -1,39 +1,27 @@
-import mongoose from "mongoose";
-
-const { Schema } = mongoose;
-
-const likeSchema = new Schema({
-  likedUser: { type: Schema.Types.ObjectId },
-});
-
-const contentSchema = new Schema({
-  authorID: { type: Schema.Types.ObjectId },
-
-  authorName: {
-    type: String,
-    required: true,
-  },
-
-  title: {
-    type: String,
-    required: true,
-  },
-
-  imageUrl: {
-    type: String,
-    required: true,
-  },
-
-  text: {
-    type: String,
-  },
-
-  createdAt: {
-    type: Date,
-  },
-
-  Like: [likeSchema],
-});
-const Like = mongoose.model("Like", likeSchema);
-const Content = mongoose.model("Content", contentSchema);
-export { Content, Like };
+'use strict';
+const { Model } = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class postings extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  postings.init(
+    {
+      authorID: DataTypes.STRING,
+      title: DataTypes.STRING,
+      imageUrl: DataTypes.STRING,
+      text: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'postings',
+    }
+  );
+  return postings;
+};

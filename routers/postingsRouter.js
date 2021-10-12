@@ -1,33 +1,33 @@
-import express from "express";
-import {
+const express = require('express');
+const {
   getAllPostings,
   postPostings,
   getOnePosting,
   patchPosting,
   deletePosting,
-} from "../controller/postings.js";
-import {
+} = require('../controller/postings.js');
+const {
   createComments,
   getAllComments,
   editComments,
   deleteComments,
-} from "../controller/comments.js";
-// import { authMiddleware } from '../middlewares/authMiddleware.js';
+} = require('../controller/comments.js');
+// const { authMiddleware } = require() '../middlewares/authMiddleware.js'
 const postingRouter = express.Router();
 
-postingRouter.route("/").get(getAllPostings).post(postPostings);
+postingRouter.route('/').get(getAllPostings).post(postPostings);
 
 postingRouter
-  .route("/:id")
+  .route('/:id')
   .get(getOnePosting)
   .delete(deletePosting)
   .patch(patchPosting);
 
 postingRouter
-  .route("/:postingId/comments")
+  .route('/:postingId/comments')
   .post(createComments)
   .get(getAllComments)
   .patch(editComments)
   .delete(deleteComments);
 
-export default postingRouter;
+module.exports = postingRouter;
