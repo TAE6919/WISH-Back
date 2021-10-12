@@ -1,6 +1,10 @@
 const { nowDate } = require('../library/time.js');
 
-const createComments = (req, res) => {};
+const createComments = (req, res) => {
+  const { postingID } = req.params;
+  const authorID = req.get('authorID');
+  console.log(postingID, authorID);
+};
 
 const getAllComments = async (req, res) => {};
 

@@ -24,7 +24,7 @@ postingRouter
   .patch(patchPosting);
 
 postingRouter
-  .route('/:postingId/comments')
+  .route('/:postingID/comments')
   .post(createComments)
   .get(getAllComments)
   .patch(editComments)
