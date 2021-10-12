@@ -1,3 +1,4 @@
+//현재시간으로 바꿔주기
 export const nowDate = () => {
   var date = new Date();
   var year = date.getFullYear();
