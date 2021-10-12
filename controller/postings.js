@@ -1,11 +1,12 @@
 import { Content, Like } from "../models/postings.js";
 import mongoose from "mongoose";
+import { nowDate } from "../library/time.js";
 
 //테스트용
 const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
 const temp = mongoose.Types.ObjectId("c2f93bc87aa222bd5bb7a4e2");
 const nick = "John Doe";
-const postingId = mongoose.Types.ObjectId("6163f627fd74d1cbe34d8f0b");
+// const postingId = mongoose.Types.ObjectId("6163f627fd74d1cbe34d8f0b");
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
@@ -22,6 +23,7 @@ export const postPostings = async (req, res) => {
       imageUrl,
       title,
       text,
+      createdAt: nowDate(),
     };
 
     await Content.create(posting);
@@ -59,13 +61,18 @@ export const getOnePosting = async (req, res) => {
 // 특정 게시물의 일부 속성 수정
 export const patchPosting = async (req, res) => {
   const { postingId } = req.params;
+  console.log(req.body);
+  console.log(req.params);
   const { imageUrl, title, text } = req.body;
   // const { userId } = req.user;
 
   try {
     const posting = await Content.findById(postingId);
     // 토큰 id랑 해당 게시물의 작성자 id 비교
-    if (userId !== posting.authorID) return res.sendStatus(400);
+    if (!posting.authorID.equals(userId)) {
+      console.log("사용자 일치하지 않음");
+      return res.sendStatus(400);
+    }
 
     posting.imageUrl = imageUrl;
     posting.title = title;
@@ -85,13 +92,13 @@ export const patchPosting = async (req, res) => {
 
 // 특정 게시물을 삭제
 export const deletePosting = async (req, res) => {
-  // const { postingId } = req.params;
-  const userId = req.user;
+  const { postingId } = req.params;
+  // const userId = req.user;
 
   try {
     const posting = await Content.findById(postingId);
 
-    if (posting.authorID !== userId) return res.sendStatus(400);
+    if (posting.authorID.equals(userId)) return res.sendStatus(400);
     // const posting = await Content.findByIdAndDelete(postingId);
     await Content.deleteOne(posting);
     return res.sendStatus(200);
@@ -103,7 +110,7 @@ export const deletePosting = async (req, res) => {
 
 //좋아요
 export const postLike = async (req, res) => {
-  const postingId = req.params.id;
+  const { postingId } = req.params;
   // const { userId } = req.user;
 
   try {

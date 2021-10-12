@@ -114,7 +114,7 @@ paths:
       summary: 특정 게시물 삭제
       parameters:
         - in: path
-          name: userId
+          name: postingId
           schema:
             type: string
       responses:
@@ -128,7 +128,7 @@ paths:
       summary: 특정 게시물 수정
       parameters:
         - in: path
-          name: userId
+          name: postingId
           schema:
             type: string
       requestBody:
