@@ -38,7 +38,7 @@ const deletePosting = async (req, res) => {
   const { id } = req.params;
   const authorID = req.get('authorID');
   const result = await postings.destroy({ where: { id, authorID } });
-  res.send('hi');
+  res.send(result);
 };
 
 //좋아요

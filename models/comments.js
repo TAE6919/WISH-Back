@@ -8,13 +8,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      this.belongsTo(models.users);
     }
   }
   comments.init(
     {
-      postingID: DataTypes.STRING,
-      authorID: DataTypes.STRING,
+      commentID: {
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      postingID: DataTypes.INTEGER,
+      authorID: DataTypes.INTEGER,
       authorName: DataTypes.STRING,
       text: DataTypes.STRING,
     },
@@ -23,5 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'comments',
     }
   );
+
   return comments;
 };
