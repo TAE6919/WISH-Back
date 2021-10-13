@@ -1,15 +1,12 @@
-import express from 'express';
-// import { postSignup, postAuth, getMe } from '../controller/userController.js';
-// import { authMiddleware } from '../middlewares/authMiddleware.js';
-// import { validateSignUp } from '../middlewares/validMiddleware.js';
-import { getUserProfile } from '../controller/user.js';
-const userRouter = express.Router();
+import express from "express"
+import { signup, auth, getMe, getLogin, getSignup } from "../controller/user.js"
+import { authMiddleware } from "../middlewares/authMiddleware.js"
+import { validateSignUp } from "../middlewares/signupMiddleware.js"
 
-userRouter.post('/');
-userRouter.post('/auth');
+const userRouter = express.Router()
 
-// 페이지 별로 로그인 검사를 위해 별도 API 준비
-userRouter.get('/me');
+userRouter.route("/").get(getSignup).post(signup, validateSignUp)
+userRouter.route("/auth").get(getLogin).post(auth)
 
-userRouter.route('/:userId').get(getUserProfile);
-export default userRouter;
+userRouter.get("/me", authMiddleware, getMe)
+export default userRouter
