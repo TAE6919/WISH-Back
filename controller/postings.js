@@ -1,11 +1,11 @@
-import { Content, Like } from "../models/postings.js";
-import mongoose from "mongoose";
-import { nowDate } from "../library/time.js";
+import { Content, Like } from '../models/postings.js';
+import mongoose from 'mongoose';
+import { nowDate } from '../library/time.js';
 
 //테스트용
-const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
-const temp = mongoose.Types.ObjectId("c2f93bc87aa222bd5bb7a4e2");
-const nick = "John Doe";
+const userId = mongoose.Types.ObjectId('c1f93bc87aa222bd5bb7a4eb');
+const temp = mongoose.Types.ObjectId('c2f93bc87aa222bd5bb7a4e2');
+const nick = 'John Doe';
 // const postingId = mongoose.Types.ObjectId("6163f627fd74d1cbe34d8f0b");
 
 // 게시물 생성(CREATE)
@@ -49,6 +49,7 @@ export const getAllPostings = async (req, res) => {
 
 //특정 게시물 조회 (READ ONE)
 export const getOnePosting = async (req, res) => {
+  console.log(req.user);
   const { postingId } = req.params;
   console.log(req.user);
   try {
@@ -72,7 +73,7 @@ export const patchPosting = async (req, res) => {
     const posting = await Content.findById(postingId);
     // 토큰 id랑 해당 게시물의 작성자 id 비교
     if (!posting.authorID.equals(userId)) {
-      console.log("사용자 일치하지 않음");
+      console.log('사용자 일치하지 않음');
       return res.sendStatus(400);
     }
 

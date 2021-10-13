@@ -61,8 +61,8 @@ paths:
 
   /api/postings:
     post:
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       summary: 게시물 생성
       requestBody:
         content:
@@ -109,8 +109,8 @@ paths:
 
   /api/postings/{postingId}:
     delete:
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       summary: 특정 게시물 삭제
       parameters:
         - in: path
@@ -123,8 +123,8 @@ paths:
         '400':
           description: 실패
     patch:
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       summary: 특정 게시물 수정
       parameters:
         - in: path
@@ -153,8 +153,8 @@ paths:
         '400':
           description: 실패
     get:
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       summary: 특정 게시물 조회
       parameters:
         - in: path
@@ -181,8 +181,8 @@ paths:
           description: 실패
   /api/postings/{postingId}/comments:
     post:
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       summary: 댓글 생성
       parameters:
         - in: path
@@ -206,8 +206,8 @@ paths:
         '400':
           description: 실패
     get:
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       summary: 댓글 전체 조회
       parameters:
         - in: path
@@ -220,8 +220,8 @@ paths:
         '400':
           description: 실패
     patch:
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       summary: 댓글 수정
       parameters:
         - in: path
@@ -244,8 +244,8 @@ paths:
         '400':
           description: 실패
     delete:
-      # security:
-      #   - bearerAuth: []
+      security:
+        - bearerAuth: []
       summary: 댓글 삭제
       parameters:
         - in: path
@@ -257,9 +257,9 @@ paths:
           description: 성공
         '400':
           description: 실패
-# components:
-#   securitySchemes:
-#     bearerAuth:
-#       type: http
-#       scheme: bearer
-#       bearerFormat: JWT
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
