@@ -1,6 +1,10 @@
-import mongoose from 'mongoose';
+<<<<<<< HEAD
+import mongoose from "mongoose"
+=======
+import mongoose from "mongoose";
+>>>>>>> postings
 
-const { Schema } = mongoose;
+const { Schema } = mongoose
 
 const commentSchema = new Schema({
   postingID: { type: Schema.Types.ObjectId },
@@ -15,6 +19,10 @@ const commentSchema = new Schema({
     type: Date,
     required: true,
   },
-});
+})
 
-export default mongoose.model('Comment', commentSchema);
+<<<<<<< HEAD
+export default mongoose.model("Comment", commentSchema)
+=======
+export default mongoose.model("Comment", commentSchema);
+>>>>>>> postings

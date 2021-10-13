@@ -4,6 +4,7 @@ import { nowDate } from '../library/time.js';
 const postobjectId = mongoose.Types.ObjectId('55153a8014829a865bbf700f');
 const userobjectId = mongoose.Types.ObjectId('55153a1231222b865bbf700e');
 
+//댓글 저장하기
 export const createComments = (req, res) => {
   const { postingId } = req.params;
   const { text } = req.body;
@@ -22,6 +23,7 @@ export const createComments = (req, res) => {
     });
 };
 
+//댓글 가져오기
 export const getAllComments = async (req, res) => {
   const { postingId } = req.params;
   try {
@@ -33,13 +35,14 @@ export const getAllComments = async (req, res) => {
   }
 };
 
+//댓글 수정하기
 export const editComments = async (req, res) => {
   const { postingId } = req.params;
   const { text } = req.body;
   try {
     await Comment.findOneAndUpdate(
       { postingID: postingId, authorID: userobjectId },
-      { text }
+      { text, createdAt: nowDate() }
     );
     res.sendStatus(200);
   } catch (error) {
@@ -48,6 +51,7 @@ export const editComments = async (req, res) => {
   }
 };
 
+//댓글 삭제하기
 export const deleteComments = async (req, res) => {
   const { postingId } = req.params;
   try {
