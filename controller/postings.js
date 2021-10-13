@@ -1,14 +1,14 @@
 // import User from "../models/users.js";
-import { Content, Like } from "../models/postings.js";
-import mongoose from "mongoose";
+import { Content, Like } from '../models/postings.js';
+import mongoose from 'mongoose';
 // 게시물 생성(CREATE)
 
 export const postPostings = async (req, res) => {
   const { title, imageUrl, text } = req.body;
   // const { userId, nick } = req.user;
 
-  const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
-  const nick = "John Doe";
+  const userId = mongoose.Types.ObjectId('c1f93bc87aa222bd5bb7a4eb');
+  const nick = 'John Doe';
   // const { userId } = req.cookies;
 
   try {
@@ -45,7 +45,7 @@ export const getAllPostings = async (req, res) => {
 //특정 게시물 조회 (READ ONE)
 export const getOnePosting = async (req, res) => {
   const { postingId } = req.params;
-
+  console.log(req.user);
   try {
     const posting = await Content.findById(postingId);
     return res.status(200).json(posting);
@@ -100,8 +100,8 @@ export const postLike = async (req, res) => {
   const postingId = req.params.id;
   // const { userId } = req.user;
 
-  const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
-  const temp = mongoose.Types.ObjectId("c2f93bc87aa222bd5bb7a4e2");
+  const userId = mongoose.Types.ObjectId('c1f93bc87aa222bd5bb7a4eb');
+  const temp = mongoose.Types.ObjectId('c2f93bc87aa222bd5bb7a4e2');
   try {
     // 해당 사용자가 좋아요를 눌렀는지 확인
     const posting = await Content.findById(postingId);
