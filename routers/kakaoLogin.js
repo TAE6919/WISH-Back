@@ -8,7 +8,6 @@ const KakaoStrategy = kakaoPassport.Strategy;
 
 passport.serializeUser((user, done) => {
   // Strategy 성공 시 호출됨
-
   const { id } = user;
   done(null, id); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
 });

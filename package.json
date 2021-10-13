@@ -14,6 +14,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
@@ -29,7 +30,6 @@
     "swagger-ui-express": "^4.1.6",
     "yamljs": "^0.3.0"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TAE6919/Hangstagram-Back.git"
