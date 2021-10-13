@@ -3,18 +3,18 @@ import mongoose from "mongoose";
 import { nowDate } from "../library/time.js";
 
 //테스트용
-const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
-const temp = mongoose.Types.ObjectId("c2f93bc87aa222bd5bb7a4e2");
-const nick = "John Doe";
+// const userId = mongoose.Types.ObjectId("c1f93bc87aa222bd5bb7a4eb");
+// const temp = mongoose.Types.ObjectId("c2f93bc87aa222bd5bb7a4e2");
+// const nick = "John Doe";
 // const postingId = mongoose.Types.ObjectId("6163f627fd74d1cbe34d8f0b");
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
-  const { title, text } = req.body;
-  const { file } = req;
-  const imageUrl = file.path;
-  // const { userId } = req.user;
-  console.log(req.body);
+  const { title, text, imageUrl } = req.body;
+  // const { file } = req;
+  // const imageUrl = file.path;
+  const { userId, nick } = req.user;
+
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
     // const user = await User.findById(userId);
@@ -50,7 +50,6 @@ export const getAllPostings = async (req, res) => {
 //특정 게시물 조회 (READ ONE)
 export const getOnePosting = async (req, res) => {
   const { postingId } = req.params;
-  console.log(req.user);
   try {
     const posting = await Content.findById(postingId);
     return res.status(200).json(posting);
@@ -63,10 +62,8 @@ export const getOnePosting = async (req, res) => {
 // 특정 게시물의 일부 속성 수정
 export const patchPosting = async (req, res) => {
   const { postingId } = req.params;
-  console.log(req.body);
-  console.log(req.params);
   const { imageUrl, title, text } = req.body;
-  // const { userId } = req.user;
+  const { userId } = req.user;
 
   try {
     const posting = await Content.findById(postingId);
@@ -95,12 +92,12 @@ export const patchPosting = async (req, res) => {
 // 특정 게시물을 삭제
 export const deletePosting = async (req, res) => {
   const { postingId } = req.params;
-  // const userId = req.user;
+  const userId = req.user;
 
   try {
     const posting = await Content.findById(postingId);
 
-    if (posting.authorID.equals(userId)) return res.sendStatus(400);
+    if (!posting.authorID.equals(userId)) return res.sendStatus(400);
     // const posting = await Content.findByIdAndDelete(postingId);
     await Content.deleteOne(posting);
     return res.sendStatus(200);
@@ -113,7 +110,7 @@ export const deletePosting = async (req, res) => {
 //좋아요
 export const postLike = async (req, res) => {
   const { postingId } = req.params;
-  // const { userId } = req.user;
+  const { userId } = req.user;
 
   try {
     // 해당 사용자가 좋아요를 눌렀는지 확인
