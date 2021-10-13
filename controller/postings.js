@@ -1,13 +1,13 @@
-import { Content, Like } from "../models/postings.js";
-import mongoose from "mongoose";
-import { nowDate } from "../library/time.js";
+import { Content, Like } from '../models/postings.js';
+import mongoose from 'mongoose';
+import { nowDate } from '../library/time.js';
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
-  const { title, text } = req.body;
+  const { title, text, imageUrl } = req.body;
   // const { file } = req;
   // const imageUrl = file.path;
-  const { _id } = req.user;
+  const { _id, nick } = req.user;
   console.log(req.body);
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
@@ -57,6 +57,7 @@ export const getOnePosting = async (req, res) => {
 // 특정 게시물의 일부 속성 수정
 export const patchPosting = async (req, res) => {
   const { postingId } = req.params;
+  const { _id } = req.user;
   console.log(req.body);
   console.log(req.params);
   const { imageUrl, title, text } = req.body;
@@ -65,8 +66,8 @@ export const patchPosting = async (req, res) => {
   try {
     const posting = await Content.findById(postingId);
     // 토큰 id랑 해당 게시물의 작성자 id 비교
-    if (!posting.authorID.equals(userId)) {
-      console.log("사용자 일치하지 않음");
+    if (!posting.authorID.equals(_id)) {
+      console.log('사용자 일치하지 않음');
       return res.sendStatus(400);
     }
 
@@ -94,7 +95,7 @@ export const deletePosting = async (req, res) => {
   try {
     const posting = await Content.findById(postingId);
 
-    if (posting.authorID.equals(_id)) return res.sendStatus(400);
+    if (!posting.authorID.equals(_id)) return res.sendStatus(400);
     // const posting = await Content.findByIdAndDelete(postingId);
     await Content.deleteOne(posting);
     return res.sendStatus(200);
@@ -119,7 +120,7 @@ export const postLike = async (req, res) => {
         { _id: postingId },
         {
           Like: {
-            $elemMatch: { likedUser: userId },
+            $elemMatch: { likedUser: _id },
           },
         },
       ],

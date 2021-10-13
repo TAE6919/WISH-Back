@@ -26,8 +26,8 @@ export const createComments = (req, res) => {
 export const getAllComments = async (req, res) => {
   const { postingId } = req.params;
   try {
-    await Comment.find({ postingID: postingId });
-    res.sendStatus(200);
+    const allComments = await Comment.find({ postingID: postingId });
+    res.status(200).json({ allComments });
   } catch (error) {
     console.error(error);
     res.sendStatus(400);

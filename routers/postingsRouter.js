@@ -17,18 +17,15 @@ import { uploadFile } from '../middlewares/uploadMiddleware.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
 const postingRouter = express.Router();
 
-postingRouter
-  .route('/')
-  .get(getAllPostings)
-  .post(uploadFile.single('image'), postPostings);
+postingRouter.route('/').get(getAllPostings).post(authMiddleware, postPostings);
 
 postingRouter
   .route('/:postingId')
   .get(getOnePosting)
-  .delete(deletePosting)
-  .patch(patchPosting);
+  .delete(authMiddleware, deletePosting)
+  .patch(authMiddleware, patchPosting);
 
-postingRouter.route('/:postingId/like').post(postLike);
+postingRouter.route('/:postingId/like').post(authMiddleware, postLike);
 
 postingRouter
   .route('/:postingId/comments')
