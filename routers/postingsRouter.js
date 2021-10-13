@@ -14,21 +14,25 @@ import {
   deleteComments,
 } from "../controller/comments.js"
 import { uploadFile } from "../middlewares/uploadMiddleware.js"
-// import { authMiddleware } from '../middlewares/authMiddleware.js';
+import { authMiddleware } from "../middlewares/authMiddleware.js"
 const postingRouter = express.Router()
 
-postingRouter.route("/").get(getAllPostings).post(uploadFile.single("image"), postPostings)
+postingRouter.route("/").get(getAllPostings).post(authMiddleware, postPostings)
 
-postingRouter.route("/:postingId").get(getOnePosting).delete(deletePosting).patch(patchPosting)
+postingRouter
+  .route("/:postingId")
+  .get(getOnePosting)
+  .delete(authMiddleware, deletePosting)
+  .patch(authMiddleware, patchPosting)
 
-postingRouter.route("/:postingId/like").post(postLike)
+postingRouter.route("/:postingId/like").post(authMiddleware, postLike)
 
 postingRouter
   .route("/:postingId/comments")
-  .post(createComments)
+  .post(authMiddleware, createComments)
   .get(getAllComments)
-  .patch(editComments)
-  .delete(deleteComments)
+  .patch(authMiddleware, editComments)
+  .delete(authMiddleware, deleteComments)
 
 postingRouter.route("/:id/comments")
 

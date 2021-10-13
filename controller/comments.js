@@ -1,17 +1,16 @@
 import Comment from '../models/comments.js';
 import mongoose from 'mongoose';
 import { nowDate } from '../library/time.js';
-const postobjectId = mongoose.Types.ObjectId('55153a8014829a865bbf700f');
-const userobjectId = mongoose.Types.ObjectId('55153a1231222b865bbf700e');
 
 //댓글 저장하기
 export const createComments = (req, res) => {
+  const { _id, nick } = req.user;
   const { postingId } = req.params;
   const { text } = req.body;
   const targetComment = new Comment({
-    postingID: postobjectId,
-    authorID: userobjectId,
-    authorName: '김기태',
+    postingID: postingId,
+    authorID: _id,
+    authorName: nick,
     text,
     createdAt: nowDate(),
   });
@@ -27,8 +26,8 @@ export const createComments = (req, res) => {
 export const getAllComments = async (req, res) => {
   const { postingId } = req.params;
   try {
-    await Comment.find({ postingID: postingId });
-    res.sendStatus(200);
+    const allComments = await Comment.find({ postingID: postingId });
+    res.status(200).json({ allComments });
   } catch (error) {
     console.error(error);
     res.sendStatus(400);
@@ -37,11 +36,12 @@ export const getAllComments = async (req, res) => {
 
 //댓글 수정하기
 export const editComments = async (req, res) => {
+  const { _id } = req.user;
   const { postingId } = req.params;
   const { text } = req.body;
   try {
     await Comment.findOneAndUpdate(
-      { postingID: postingId, authorID: userobjectId },
+      { postingID: postingId, authorID: _id },
       { text, createdAt: nowDate() }
     );
     res.sendStatus(200);
@@ -53,11 +53,12 @@ export const editComments = async (req, res) => {
 
 //댓글 삭제하기
 export const deleteComments = async (req, res) => {
+  const { _id } = req.user;
   const { postingId } = req.params;
   try {
     await Comment.findOneAndRemove({
       postingID: postingId,
-      authorID: userobjectId,
+      authorID: _id,
     });
     res.sendStatus(200);
   } catch (error) {
