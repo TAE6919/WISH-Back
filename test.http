@@ -1,0 +1,15 @@
+# PATCH  http://localhost:4000/api/postings/616406a7868f07ea4d3adf47
+# content-type: application/json
+
+# {
+#   "title" : "이건 제목",
+#   "text": "글 내용 변경!!",
+#   "imageUrl": "이미지",
+# }
+
+GET http://localhost:4000/api/postings HTTP/1.1
+
+# POST url HTTP/1.1
+# header name: header value
+
+# content
