@@ -10,9 +10,11 @@ const nick = "John Doe";
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
-  const { title, imageUrl, text } = req.body;
+  const { title, text } = req.body;
+  const { file } = req;
+  const imageUrl = file.path;
   // const { userId } = req.user;
-
+  console.log(req.body);
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
     // const user = await User.findById(userId);
