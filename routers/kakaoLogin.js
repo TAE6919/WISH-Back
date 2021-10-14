@@ -30,7 +30,7 @@ passport.use(
   new KakaoStrategy(
     {
       clientID: 'c5b22a4795f62ae5790a2f735f2f0ffc',
-      callbackURL: 'http://3.36.74.246:4000/kakao/oauth',
+      callbackURL: 'http://3.35.235.79/kakao/oauth',
     },
     async function (accessToken, refreshToken, profile, done) {
       const { username } = profile;
