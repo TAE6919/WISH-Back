@@ -8,16 +8,21 @@ const KakaoStrategy = kakaoPassport.Strategy;
 
 passport.serializeUser((user, done) => {
   // Strategy 성공 시 호출됨
-  const { email } = user;
-
-  done(null, email); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
+  const { _id, nick } = user;
+  console.log('ser');
+  done(null, { _id, nick }); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
 });
 
-passport.deserializeUser(async (email, done) => {
+passport.deserializeUser(async (user, done) => {
   // 매개변수 user는 serializeUser의 done의 인자 user를 받은 것
-  const user = await User.findOne({ email });
-
-  done(null, user); // 여기의 user가 req.user가 됨
+  const { _id, nick } = user;
+  const nowUser = await User.findById({ _id });
+  console.log('dese');
+  const nowUserEmailNick = {
+    _id: nowUser._id,
+    nick: nowUser.nick,
+  };
+  done(null, nowUserEmailNick); // 여기의 user가 req.user가 됨
 });
 
 passport.use(
@@ -59,7 +64,6 @@ kakaoLoginRouter.get(
   }),
   (req, res) => {
     // 로그인에 성공했을 경우, 다음 라우터가 실행된다
-
     res.redirect('/');
   }
 );

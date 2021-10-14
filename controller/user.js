@@ -1,16 +1,17 @@
 import User from '../models/users.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { jwtToken } from '../library/JWT.js';
 import { Content } from '../models/postings.js';
-const SECRET_KEY = 'hanghae-3';
 
-export const getSignup = (req, res) => {
-  return res.render("signup")
-}
+// export const getSignup = (req, res) => {
 
-export const getLogin = (req, res) => {
-  return res.render("login")
-}
+//   return res.render("signup")
+// }
+
+
+// export const getLogin = (req, res) => {
+//   return res.render("login")
+// }
 
 export const signup = async (req, res) => {
   const { nick, email, password, confirmPassword } = req.body
@@ -52,12 +53,15 @@ export const auth = async (req, res) => {
   const isPwMatched = await bcrypt.compare(password, user.password)
 
   if (!isPwMatched)
-    return res.status(400).send({ result: "failure", msg: "비밀번호가 일치하지 않습니다." })
 
-  const token = jwt.sign({ userId: user._id }, SECRET_KEY)
+    return res
+      .status(400)
+      .send({ result: 'failure', msg: '비밀번호가 일치하지 않습니다.' });
+  const { _id } = user;
+  const token = jwtToken(_id);
+  return res.status(200).send({ result: 'success', msg: '로그인 완료', token });
+};
 
-  return res.status(200).send({ result: "success", msg: "로그인 완료", token })
-}
 
 export const getMe = async (req, res) => {
   const userId = req.user._id
