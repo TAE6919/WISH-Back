@@ -5,14 +5,10 @@ import { nowDate } from "../library/time.js";
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
   // content-type : multipart/form-data 라서 req.body가 이상하게 옴
-  const reqBody = JSON.parse(JSON.stringify(req.body));
-  const { text } = reqBody;
-  const { file } = req;
-  const imageUrl = file.path;
+  // const reqBody = JSON.parse(JSON.stringify(req.body));
+  const { imageUrl } = req.imageUrl;
+  const { text } = req.body;
   const { _id, nick } = req.user;
-
-  console.log(JSON.parse(JSON.stringify(req.body)));
-  console.log(req.file);
 
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
