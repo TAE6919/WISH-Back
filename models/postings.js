@@ -14,11 +14,6 @@ const contentSchema = new Schema({
     required: true,
   },
 
-  title: {
-    type: String,
-    required: true,
-  },
-
   imageUrl: {
     type: String,
     required: true,
