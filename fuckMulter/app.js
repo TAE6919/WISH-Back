@@ -48,12 +48,9 @@ const middle = async (req, res, next) => {
 
     return response;
   }
+  const imageBuffer = decodeBase64Image(img);
 
-  var imageBuffer = decodeBase64Image(img);
-  console.log(imageBuffer.type);
-  const base64String = imageBuffer.data.toString("base64");
-  const aaaa = Buffer(base64String, "base64");
-  console.log(aaaa);
+  //서버 로컬에 파일 저장
   try {
     const result = await fs.writeFile(
       `./uploads/${filename}.jpeg`,
@@ -64,11 +61,8 @@ const middle = async (req, res, next) => {
     console.log(err);
   }
 
-  //db에는 /uploads/${uuid}
-
-  console.log("미들");
-
-  return next();
+  req.imageUrl = `./uploads/${filename}.jpeg`;
+  next();
 };
 
 apiRouter.route("/images").post(middle, (req, res) => {
