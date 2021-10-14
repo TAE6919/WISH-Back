@@ -7,7 +7,16 @@
 
 올리고 공유하는 사이트를 만들어봤습니다!
 
-# SWAGGER 🎨
+# 와이어 프레임 🖼
+![image](https://user-images.githubusercontent.com/86820463/137281591-42edb1a5-4fd4-4a5d-86f7-04e2744ea1c7.png)
+
+노션 
+https://mellow-hearing-0ce.notion.site/WISH-de9e4121853649288e02b5b519c6e920
+
+
+
+
+# SWAGGER(API 명세) 🎨
 ![image](https://user-images.githubusercontent.com/86820463/137259846-f1492ef2-2b28-41b2-9315-a00324f31a65.png)
 
 # 추가된 기능들 ‼ 
