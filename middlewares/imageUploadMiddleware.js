@@ -16,7 +16,7 @@ const decodeBase64Image = (dataString) => {
 
 export const uploadImage = async (req, res, next) => {
   // base64 형식 읽어서 변수에 저장
-  const { img, text } = req.body;
+  const { img } = req.body;
   // uuid에서 id 하나 발급
   const fileName = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
   const imageBuffer = decodeBase64Image(img);
