@@ -1,11 +1,9 @@
 import User from '../models/users.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { jwtToken } from '../library/JWT.js';
 import { Content } from '../models/postings.js';
-const SECRET_KEY = 'hanghae-3';
 
 export const getSignup = (req, res) => {
-  console.log(req.session);
   return res.render('signup');
 };
 
@@ -65,9 +63,8 @@ export const auth = async (req, res) => {
     return res
       .status(400)
       .send({ result: 'failure', msg: '비밀번호가 일치하지 않습니다.' });
-
-  const token = jwt.sign({ userId: user._id }, SECRET_KEY);
-
+  const { _id } = user;
+  const token = jwtToken(_id);
   return res.status(200).send({ result: 'success', msg: '로그인 완료', token });
 };
 

@@ -1,5 +1,6 @@
 import { Content, Like } from '../models/postings.js';
 import mongoose from 'mongoose';
+import { jwtToken } from '../library/JWT.js';
 import { nowDate } from '../library/time.js';
 
 // 게시물 생성(CREATE)
@@ -7,7 +8,9 @@ export const postPostings = async (req, res) => {
   const { title, text, imageUrl } = req.body;
   // const { file } = req;
   // const imageUrl = file.path;
+
   const { _id, nick } = req.user;
+
   console.log(req.body);
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
@@ -31,13 +34,26 @@ export const postPostings = async (req, res) => {
 };
 
 // 게시물 전체 조회(READ ALL)
-export const getAllPostings = async (req, res) => {
-  try {
-    const postings = await Content.find({}).sort({ createdAt: -1 });
-    return res.status(200).json(postings);
-  } catch (err) {
-    console.log(err);
-    return res.sendStatus(400);
+export const getAllPostings = (req, res) => {
+  const sendResponse = async (token = '') => {
+    try {
+      const postings = await Content.find({}).sort({ createdAt: -1 });
+      if (token) {
+        return res.status(200).json({ postings, token });
+      }
+      return res.status(200).json({ postings });
+    } catch (err) {
+      console.log(err);
+      return res.sendStatus(400);
+    }
+  };
+
+  if (req.user) {
+    const { _id, nick } = req.user;
+    const token = jwtToken(_id);
+    sendResponse(token);
+  } else {
+    sendResponse();
   }
 };
 
