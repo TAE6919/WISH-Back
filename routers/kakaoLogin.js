@@ -1,5 +1,5 @@
 import express from 'express';
-import KakaoUser from '../models/kakaoUser.js';
+import User from '../models/users.js';
 const kakaoLoginRouter = express.Router();
 import passport from 'passport';
 import kakaoPassport from 'passport-kakao';
@@ -8,13 +8,14 @@ const KakaoStrategy = kakaoPassport.Strategy;
 
 passport.serializeUser((user, done) => {
   // Strategy 성공 시 호출됨
-  const { id } = user;
-  done(null, id); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
+  const { email } = user;
+
+  done(null, email); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (email, done) => {
   // 매개변수 user는 serializeUser의 done의 인자 user를 받은 것
-  const user = await KakaoUser.findOne({ id });
+  const user = await User.findOne({ email });
 
   done(null, user); // 여기의 user가 req.user가 됨
 });
@@ -27,11 +28,18 @@ passport.use(
       callbackURL: 'http://localhost:4000/kakao/oauth',
     },
     async function (accessToken, refreshToken, profile, done) {
-      const { id, username } = profile;
+      const { username } = profile;
+      const { email } = profile._json.kakao_account;
+
       try {
-        const user = await KakaoUser.findOne({ id });
+        const user = await User.findOne({ email });
+
         if (!user) {
-          const newUser = await KakaoUser.create({ id, nick: username });
+          const newUser = await User.create({
+            email,
+            nick: username,
+            isKaKao: true,
+          });
           return done(null, newUser);
         } else {
           return done(null, user);
@@ -51,6 +59,7 @@ kakaoLoginRouter.get(
   }),
   (req, res) => {
     // 로그인에 성공했을 경우, 다음 라우터가 실행된다
+
     res.redirect('/');
   }
 );
