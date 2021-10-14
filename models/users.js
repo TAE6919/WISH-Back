@@ -13,6 +13,10 @@ const userSchema = new Schema({
     type: String,
   },
 
+  isKaKao: {
+    type: Boolean,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

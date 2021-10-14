@@ -21,12 +21,13 @@ app.get('/', (req, res) => {
 app.use(cors());
 app.use(
   session({
-    secret: 'secretKey',
-    cookie: { maxAge: 60 * 60 * 1000 },
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    secret: 'sdflsdjfjlis',
+    cookie: { maxAge: 60000 },
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());

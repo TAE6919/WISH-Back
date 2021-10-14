@@ -1,0 +1,18 @@
+config:
+  target: 'http://localhost:4000'
+  phases:
+    - duration: 10
+      arrivalRate: 100
+scenarios:
+  - flow:
+      - post:
+          url: '/api/users/auth'
+          json:
+            email: 'test5@test5.com'
+            password: 'test5'
+      - post:
+          url: '/api/postings/61668fa14f28cebf240d970b/comments'
+          headers:
+            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTY3MGIyZmNmMjA2ZTUyNmU1ZTczZmMiLCJpYXQiOjE2MzQxNDQ1Mzh9.yP7f8pAAZkVhT4NsrxpJgceHvnnSvg0OU5s4TNve9yE
+          json:
+            test: 'text'

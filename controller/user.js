@@ -5,6 +5,7 @@ import { Content } from '../models/postings.js';
 const SECRET_KEY = 'hanghae-3';
 
 export const getSignup = (req, res) => {
+  console.log(req.session);
   return res.render('signup');
 };
 
