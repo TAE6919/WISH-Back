@@ -20,7 +20,6 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "helmet": "^4.6.0",
-    "jest": "^27.2.4",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.7",
@@ -38,5 +37,8 @@
     "url": "https://github.com/TAE6919/Hangstagram-Back/issues"
   },
   "homepage": "https://github.com/TAE6919/Hangstagram-Back#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jest": "^27.2.5"
+  }
 }
