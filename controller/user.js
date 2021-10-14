@@ -48,7 +48,7 @@ export const auth = async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
-  if (!user) return res.status(400).send({ result: "falure", msg: "존재하지 않는 회원입니다." })
+  if (!user) return res.status(400).send({ result: "falure", msg: "아이디 혹은 비밀번호가 틀립니다" })
 
   const isPwMatched = await bcrypt.compare(password, user.password)
 
@@ -56,7 +56,7 @@ export const auth = async (req, res) => {
 
     return res
       .status(400)
-      .send({ result: 'failure', msg: '비밀번호가 일치하지 않습니다.' });
+      .send({ result: 'failure', msg: '아이디 혹은 비밀번호가 틀립니다.' });
   const { _id } = user;
   const token = jwtToken(_id);
   return res.status(200).send({ result: 'success', msg: '로그인 완료', token });
@@ -64,9 +64,11 @@ export const auth = async (req, res) => {
 
 
 export const getMe = async (req, res) => {
-  const userId = req.user._id
+  const {email,nick} = req.user
+ 
+
   return res.status(200).send({
-    userId,
+    email,nick
 
   })
 }
