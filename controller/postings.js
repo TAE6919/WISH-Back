@@ -4,17 +4,16 @@ import { nowDate } from "../library/time.js";
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
-  const { text, imageUrl } = req.body;
-  // const { file } = req;
-  // const imageUrl = file.path;
-
+  // content-type : multipart/form-data 라서 req.body가 이상하게 옴
+  const reqBody = JSON.parse(JSON.stringify(req.body));
+  const { text } = reqBody;
+  const { file } = req;
+  const imageUrl = file.path;
   const { _id, nick } = req.user;
 
-  console.log(req.body);
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
     // const user = await User.findById(userId);
-
     const posting = {
       authorID: _id,
       authorName: nick,
@@ -73,8 +72,6 @@ export const getOnePosting = async (req, res) => {
 export const patchPosting = async (req, res) => {
   const { postingId } = req.params;
   const { _id } = req.user;
-  console.log(req.body);
-  console.log(req.params);
   const { imageUrl, text } = req.body;
   // const { userId } = req.user;
 
