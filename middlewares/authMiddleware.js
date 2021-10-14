@@ -9,14 +9,12 @@ export const authMiddleware = async (req, res, next) => {
     next();
     return;
   }
-
   const { authorization } = req.headers;
 
   // 로그인 안 하면 authorization 없음
-  if (!authorization) return res.sendStatus(400);
+  if (!authorization) return res.status(400).send();
 
   const [tokenType, tokenValue] = authorization.split(" ");
-
   if (tokenType !== "Bearer")
     return res.status(400).send({ msg: "로그인 후 사용하세요." });
   try {

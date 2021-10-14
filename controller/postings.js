@@ -11,6 +11,9 @@ export const postPostings = async (req, res) => {
   const imageUrl = file.path;
   const { _id, nick } = req.user;
 
+  console.log(JSON.parse(JSON.stringify(req.body)));
+  console.log(req.file);
+
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
     // const user = await User.findById(userId);
