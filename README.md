@@ -20,7 +20,7 @@ https://mellow-hearing-0ce.notion.site/WISH-de9e4121853649288e02b5b519c6e920
 ![image](https://user-images.githubusercontent.com/86820463/137259846-f1492ef2-2b28-41b2-9315-a00324f31a65.png)
 
 # 추가된 기능들 ‼ 
-passport-kakao를 이용한 소셜 로그인
+passport-kakao를 이용한 소셜 로그인 🔑
 
 게시글 알람 ❤ 
 
