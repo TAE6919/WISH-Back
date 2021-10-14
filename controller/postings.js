@@ -35,7 +35,8 @@ export const postPostings = async (req, res) => {
 
 // 게시물 전체 조회(READ ALL)
 export const getAllPostings = (req, res) => {
-  const sendResponse = async (token = '') => {
+  const sendResponse = async (JWTtoken) => {
+    const token = JWTtoken || '';
     try {
       const postings = await Content.find({}).sort({ createdAt: -1 });
       if (token) {
