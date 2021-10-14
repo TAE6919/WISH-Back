@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import User from "../models/users.js"
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-
-const SECRET_KEY = "hanghae-3"
-
-export const getSignup = (req, res) => {
-  return res.render("signup")
-}
-=======
 import User from '../models/users.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -16,10 +5,8 @@ import { Content } from '../models/postings.js';
 const SECRET_KEY = 'hanghae-3';
 
 export const getSignup = (req, res) => {
-  console.log(req.session);
-  return res.render('signup');
-};
->>>>>>> 053a001e442cccb5ff26ff627884b58ef14b3743
+  return res.render("signup")
+}
 
 export const getLogin = (req, res) => {
   return res.render("login")
@@ -76,12 +63,10 @@ export const getMe = async (req, res) => {
   const userId = req.user._id
   return res.status(200).send({
     userId,
-<<<<<<< HEAD
+
   })
 }
-=======
-  });
-};
+
 
 export const getUserProfile = async (req, res) => {
   const { userId } = req.params;
@@ -92,4 +77,4 @@ export const getUserProfile = async (req, res) => {
     console.error(error), res.sendStatus(400);
   }
 };
->>>>>>> 053a001e442cccb5ff26ff627884b58ef14b3743
+
