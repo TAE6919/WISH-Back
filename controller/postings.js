@@ -49,7 +49,6 @@ export const getAllPostings = (req, res) => {
   const sendResponse = async (JWTtoken) => {
     const token = JWTtoken || "";
 
-    const postingId = mongoose.Types.ObjectId("61699623c8c6e5e0f426f306");
     try {
       // const postings = await Content.find({}).sort({ createdAt: -1 });
       const postings = await Content.aggregate([
@@ -66,11 +65,6 @@ export const getAllPostings = (req, res) => {
             imageUrl: "$imageUrl",
             text: "$text",
             Like: "$Like",
-          },
-        },
-        {
-          $match: {
-            _id: postingId,
           },
         },
         {
