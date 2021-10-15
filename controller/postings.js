@@ -48,7 +48,6 @@ export const postPostings = async (req, res) => {
 export const getAllPostings = (req, res) => {
   const sendResponse = async (JWTtoken) => {
     const token = JWTtoken || "";
-
     try {
       // const postings = await Content.find({}).sort({ createdAt: -1 });
       const postings = await Content.aggregate([
