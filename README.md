@@ -13,7 +13,7 @@
 노션 
 https://mellow-hearing-0ce.notion.site/WISH-de9e4121853649288e02b5b519c6e920
 
-# 기술 스택
+# 기술 스택 ⚙
 Front-end 
 
 - Pure CSS
