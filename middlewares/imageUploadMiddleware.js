@@ -21,18 +21,18 @@ export const uploadImage = async (req, res, next) => {
   const fileName = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
   const imageBuffer = decodeBase64Image(img);
 
-  const imageUrl = `uploads/${fileName}.jpeg`;
+  const imageUrl = `./uploads/${fileName}.jpeg`;
 
   //fs모듈을 써서 uploads 폴더에 저장, 파일이름은 uuid.jpeg
   try {
     const result = await fs.writeFile(imageUrl, imageBuffer.data);
     console.log(result);
+    //성공하면 req에 새로운 객체 생성
+    req.imageUrl = { imageUrl };
+    next();
   } catch (err) {
     console.log(err);
     //에러 발생시, 작업 중단하고 클라이언트에게 메세지 전송
     return res.status(400).send({ msg: "파일 저장에 실패하였습니다." });
   }
-  //성공하면 req에 새로운 객체 생성
-  req.imageUrl = { imageUrl };
-  next();
 };
