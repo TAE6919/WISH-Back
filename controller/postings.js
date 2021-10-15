@@ -75,7 +75,7 @@ export const getOnePosting = async (req, res) => {
 export const patchPosting = async (req, res) => {
   const { postingId } = req.params;
   const { _id } = req.user;
-  const { imageUrl, text } = req.body;
+  const { text } = req.body;
   // const { userId } = req.user;
 
   try {
@@ -88,7 +88,6 @@ export const patchPosting = async (req, res) => {
         .send({ message: "본인의 게시물만 수정할 수 있습니다." });
     }
 
-    posting.imageUrl = imageUrl;
     posting.text = text;
 
     await posting.save();
