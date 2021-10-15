@@ -1,7 +1,7 @@
 import { Content, Like } from '../models/postings.js';
 import { jwtToken } from '../library/JWT.js';
 import { nowDate } from '../library/time.js';
-
+import { logger } from '../logger/logger.js';
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
   // content-type : multipart/form-data 라서 req.body가 이상하게 옴
@@ -24,13 +24,15 @@ export const postPostings = async (req, res) => {
     await Content.create(posting);
     return res.sendStatus(200);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.sendStatus(400);
   }
 };
 
 // 게시물 전체 조회(READ ALL)
 export const getAllPostings = (req, res) => {
+  console.log(req.user);
+
   const sendResponse = async (JWTtoken) => {
     const token = JWTtoken || '';
     try {
@@ -40,7 +42,7 @@ export const getAllPostings = (req, res) => {
       }
       return res.status(200).json({ postings });
     } catch (err) {
-      console.log(err);
+      logger.error(err);
       return res.sendStatus(400);
     }
   };
@@ -62,7 +64,7 @@ export const getOnePosting = async (req, res) => {
     const posting = await Content.findById(postingId);
     return res.status(200).json(posting);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.sendStatus(400);
   }
 };
@@ -92,7 +94,7 @@ export const patchPosting = async (req, res) => {
 
     return res.sendStatus(200);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.sendStatus(400);
   }
 };
@@ -110,7 +112,7 @@ export const deletePosting = async (req, res) => {
     await Content.deleteOne(posting);
     return res.sendStatus(200);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.sendStatus(400);
   }
 };
@@ -154,7 +156,7 @@ export const postLike = async (req, res) => {
     const likeCount = posting.Like.length;
     return res.status(200).send({ posting, likeCount });
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.sendStatus(400);
   }
 };

@@ -1,5 +1,5 @@
-import signUpSchema from "../validations/signup.js";
-
+import signUpSchema from '../validations/signup.js';
+import { logger } from '../logger/logger.js';
 export const validateSignUp = async (req, res, next) => {
   const { nick, email, password, confirmPassword } = req.body;
 
@@ -11,7 +11,7 @@ export const validateSignUp = async (req, res, next) => {
       if (isIncluded)
         return res
           .status(400)
-          .send({ msg: "닉네임 과 패스워드에 중복이 있습니다." });
+          .send({ msg: '닉네임 과 패스워드에 중복이 있습니다.' });
     }
 
     const value = await signUpSchema.validateAsync({
@@ -24,6 +24,7 @@ export const validateSignUp = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    return res.status(400).send({ message: "양식을 확인하세요." });
+    logger.error(error);
+    return res.status(400).send({ message: '양식을 확인하세요.' });
   }
 };
