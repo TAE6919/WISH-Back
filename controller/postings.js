@@ -1,26 +1,22 @@
-import { Content, Like } from '../models/postings.js';
-import mongoose from 'mongoose';
-import { jwtToken } from '../library/JWT.js';
-import { nowDate } from '../library/time.js';
+import { Content, Like } from "../models/postings.js";
+import { jwtToken } from "../library/JWT.js";
+import { nowDate } from "../library/time.js";
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
-  const { title, text, imageUrl } = req.body;
-  // const { file } = req;
-  // const imageUrl = file.path;
-
+  // content-type : multipart/form-data 라서 req.body가 이상하게 옴
+  // const reqBody = JSON.parse(JSON.stringify(req.body));
+  const { imageUrl } = req.imageUrl;
+  const { text } = req.body;
   const { _id, nick } = req.user;
 
-  console.log(req.body);
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
     // const user = await User.findById(userId);
-
     const posting = {
       authorID: _id,
       authorName: nick,
       imageUrl,
-      title,
       text,
       createdAt: nowDate(),
     };
@@ -35,7 +31,8 @@ export const postPostings = async (req, res) => {
 
 // 게시물 전체 조회(READ ALL)
 export const getAllPostings = (req, res) => {
-  const sendResponse = async (token = '') => {
+  const sendResponse = async (JWTtoken) => {
+    const token = JWTtoken || "";
     try {
       const postings = await Content.find({}).sort({ createdAt: -1 });
       if (token) {
@@ -74,9 +71,7 @@ export const getOnePosting = async (req, res) => {
 export const patchPosting = async (req, res) => {
   const { postingId } = req.params;
   const { _id } = req.user;
-  console.log(req.body);
-  console.log(req.params);
-  const { imageUrl, title, text } = req.body;
+  const { imageUrl, text } = req.body;
   // const { userId } = req.user;
 
   try {
@@ -84,12 +79,11 @@ export const patchPosting = async (req, res) => {
     
     // 토큰 id랑 해당 게시물의 작성자 id 비교
     if (!posting.authorID.equals(_id)) {
-      console.log('사용자 일치하지 않음');
+      console.log("사용자 일치하지 않음");
       return res.sendStatus(400);
     }
 
     posting.imageUrl = imageUrl;
-    posting.title = title;
     posting.text = text;
 
     await posting.save();
