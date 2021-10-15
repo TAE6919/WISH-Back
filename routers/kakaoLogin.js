@@ -60,11 +60,11 @@ kakaoLoginRouter.get('/', passport.authenticate('kakao'));
 kakaoLoginRouter.get(
   '/oauth',
   passport.authenticate('kakao', {
-    failureRedirect: '/login', // 로그인에 실패했을 경우 해당 라우터로 이동한다
+    failureRedirect: '/', // 로그인에 실패했을 경우 해당 라우터로 이동한다
   }),
   (req, res) => {
     // 로그인에 성공했을 경우, 다음 라우터가 실행된다
-    res.redirect('/');
+    res.redirect('/main');
   }
 );
 
