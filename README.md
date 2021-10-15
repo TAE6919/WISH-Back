@@ -13,6 +13,20 @@
 노션 
 https://mellow-hearing-0ce.notion.site/WISH-de9e4121853649288e02b5b519c6e920
 
+# 기술 스택
+Front-end 
+
+- Pure CSS
+
+- React
+
+Back-end
+
+- Node.js
+
+- Express
+
+- MongoDB
 
 
 
@@ -23,10 +37,6 @@ https://mellow-hearing-0ce.notion.site/WISH-de9e4121853649288e02b5b519c6e920
 passport-kakao를 이용한 소셜 로그인 🔑
 
 게시글 알람 ❤ 
-
-# 데이터 베이스 🛒
-
-몽구스를 이용하여 몽고디비를 사용 😀
 
 # Server Developers
 https://github.com/yeonjeseo 🖥
