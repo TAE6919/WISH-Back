@@ -81,6 +81,7 @@ export const patchPosting = async (req, res) => {
 
   try {
     const posting = await Content.findById(postingId);
+    
     // 토큰 id랑 해당 게시물의 작성자 id 비교
     if (!posting.authorID.equals(_id)) {
       console.log('사용자 일치하지 않음');
@@ -110,6 +111,9 @@ export const deletePosting = async (req, res) => {
 
   try {
     const posting = await Content.findById(postingId);
+    console.log(posting)
+    console.log(posting.authorID)
+    console.log(_id)
 
     if (!posting.authorID.equals(_id)) return res.sendStatus(400);
     // const posting = await Content.findByIdAndDelete(postingId);
