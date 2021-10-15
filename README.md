@@ -29,9 +29,11 @@ passport-kakao를 이용한 소셜 로그인 🔑
 몽구스를 이용하여 몽고디비를 사용 😀
 
 # Server Developers
-https://github.com/yeonjeseo🖥
+https://github.com/yeonjeseo 🖥
 
-https://github.com/ebohoon🖥
+https://github.com/ebohoon 🖥
+
+https://github.com/TAE6919 🖥
 
 
 
