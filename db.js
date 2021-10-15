@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 //db connection
 mongoose.connect(
-  // "mongodb://yeonje:6350@0.0.0.0:27017/hangsta?authSource=admin",
-  "mongodb://localhost:27017/hangsta",
+  "mongodb://yeonje:6350@0.0.0.0:27017/hangsta?authSource=admin",
+  // "mongodb://localhost:27017/hangsta",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
