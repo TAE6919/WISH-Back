@@ -1,6 +1,6 @@
-import { Content, Like } from "../models/postings.js";
-import { jwtToken } from "../library/JWT.js";
-import { nowDate } from "../library/time.js";
+import { Content, Like } from '../models/postings.js';
+import { jwtToken } from '../library/JWT.js';
+import { nowDate } from '../library/time.js';
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
@@ -32,7 +32,7 @@ export const postPostings = async (req, res) => {
 // 게시물 전체 조회(READ ALL)
 export const getAllPostings = (req, res) => {
   const sendResponse = async (JWTtoken) => {
-    const token = JWTtoken || "";
+    const token = JWTtoken || '';
     try {
       const postings = await Content.find({}).sort({ createdAt: -1 });
       if (token) {
@@ -78,7 +78,7 @@ export const patchPosting = async (req, res) => {
     const posting = await Content.findById(postingId);
     // 토큰 id랑 해당 게시물의 작성자 id 비교
     if (!posting.authorID.equals(_id)) {
-      console.log("사용자 일치하지 않음");
+      console.log('사용자 일치하지 않음');
       return res.sendStatus(400);
     }
 
@@ -104,14 +104,14 @@ export const deletePosting = async (req, res) => {
 
   try {
     const posting = await Content.findById(postingId);
-
     if (!posting.authorID.equals(_id)) return res.sendStatus(400);
+
     // const posting = await Content.findByIdAndDelete(postingId);
     await Content.deleteOne(posting);
     return res.sendStatus(200);
   } catch (err) {
     console.log(err);
-    return res, sendStatus(400);
+    return res.sendStatus(400);
   }
 };
 

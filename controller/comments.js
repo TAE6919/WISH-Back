@@ -16,9 +16,10 @@ export const createComments = (req, res) => {
   });
   targetComment
     .save()
-    .then(res.sendStatus(200))
+    .then(res.status(200))
     .catch((error) => {
-      console.error(error), res.sendStatus(400);
+      console.error(error),
+        res.status(400).json({ message: '댓글 저장 실패했습니다' });
     });
 };
 
@@ -32,7 +33,7 @@ export const getAllComments = async (req, res) => {
     res.status(200).json({ allComments });
   } catch (error) {
     console.error(error);
-    res.sendStatus(400);
+    res.status(400).json({ message: '댓글을 불러오는데 실패했습니다' });
   }
 };
 
@@ -49,7 +50,7 @@ export const editComments = async (req, res) => {
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
-    res.sendStatus(400);
+    res.status(400).json({ message: '댓글 수정에 실패했습니다' });
   }
 };
 
@@ -65,6 +66,6 @@ export const deleteComments = async (req, res) => {
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
-    res.sendStatus(400);
+    res.status(400).json({ message: '댓글 삭제에 실패했습니다' });
   }
 };
