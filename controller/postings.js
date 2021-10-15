@@ -1,6 +1,27 @@
+<<<<<<< HEAD
 import { Content, Like } from '../models/postings.js';
 import { jwtToken } from '../library/JWT.js';
 import { nowDate } from '../library/time.js';
+=======
+import { Content, Like } from "../models/postings.js";
+import { jwtToken } from "../library/JWT.js";
+import { nowDate } from "../library/time.js";
+import { logger } from "../logger/logger.js";
+import moment from "moment";
+import mongoose from "mongoose";
+
+function formatDate(date) {
+  // var d = new Date(date),
+  const month = "" + (date.getMonth() + 1);
+  const day = "" + date.getDate();
+  const year = date.getFullYear();
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+  const result = `${year}년 ${month}월 ${day}일`;
+  console.log(result);
+  return result;
+}
+>>>>>>> 6e3a67cd8c1a81797d2c67918ea61eac080debe8
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
@@ -25,7 +46,11 @@ export const postPostings = async (req, res) => {
     return res.sendStatus(200);
   } catch (err) {
     console.log(err);
+<<<<<<< HEAD
     return res.status(400).send({ message: '게시물 생성 실패하였습니다.' });
+=======
+    return res.status(400).send({ message: "게시물 생성 실패하였습니다." });
+>>>>>>> 6e3a67cd8c1a81797d2c67918ea61eac080debe8
   }
 };
 
@@ -34,7 +59,29 @@ export const getAllPostings = (req, res) => {
   const sendResponse = async (JWTtoken) => {
     const token = JWTtoken || '';
     try {
-      const postings = await Content.find({}).sort({ createdAt: -1 });
+      // const postings = await Content.find({}).sort({ createdAt: -1 });
+      const postings = await Content.aggregate([
+        {
+          $project: {
+            hahahahaha: {
+              $dateToString: {
+                date: "$createdAt",
+                format: "%Y-%m-%d",
+              },
+            },
+            authorID: "$authorID",
+            authorName: "$authorName",
+            imageUrl: "$imageUrl",
+            text: "$text",
+            Like: "$Like",
+          },
+        },
+        {
+          $sort: {
+            createdAt: -1,
+          },
+        },
+      ]);
       if (token) {
         return res.status(200).json({ postings, token });
       }
@@ -43,7 +90,11 @@ export const getAllPostings = (req, res) => {
       logger.error(err);
       return res
         .status(400)
+<<<<<<< HEAD
         .send({ message: '전체 게시물 조회 실패하였습니다.' });
+=======
+        .send({ message: "전체 게시물 조회 실패하였습니다." });
+>>>>>>> 6e3a67cd8c1a81797d2c67918ea61eac080debe8
     }
   };
 
@@ -67,7 +118,11 @@ export const getOnePosting = async (req, res) => {
     logger.error(err);
     return res
       .status(400)
+<<<<<<< HEAD
       .send({ message: '해당 게시물 조회에 실패했습니다.' });
+=======
+      .send({ message: "해당 게시물 조회에 실패했습니다." });
+>>>>>>> 6e3a67cd8c1a81797d2c67918ea61eac080debe8
   }
 };
 
@@ -82,10 +137,17 @@ export const patchPosting = async (req, res) => {
     const posting = await Content.findById(postingId);
     // 토큰 id랑 해당 게시물의 작성자 id 비교
     if (!posting.authorID.equals(_id)) {
+<<<<<<< HEAD
       console.log('사용자 일치하지 않음');
       return res
         .status(400)
         .send({ message: '본인의 게시물만 수정할 수 있습니다.' });
+=======
+      console.log("사용자 일치하지 않음");
+      return res
+        .status(400)
+        .send({ message: "본인의 게시물만 수정할 수 있습니다." });
+>>>>>>> 6e3a67cd8c1a81797d2c67918ea61eac080debe8
     }
 
     posting.text = text;
@@ -116,7 +178,11 @@ export const deletePosting = async (req, res) => {
     return res.sendStatus(200);
   } catch (err) {
     logger.error(err);
+<<<<<<< HEAD
     return res.status(400).send({ message: '게시물 삭제 실패했습니다.' });
+=======
+    return res.status(400).send({ message: "게시물 삭제 실패했습니다." });
+>>>>>>> 6e3a67cd8c1a81797d2c67918ea61eac080debe8
   }
 };
 
@@ -160,6 +226,10 @@ export const postLike = async (req, res) => {
     return res.status(200).send({ posting, likeCount });
   } catch (err) {
     logger.error(err);
+<<<<<<< HEAD
     return res.status(400).send({ message: '좋아요 실패했습니다.' });
+=======
+    return res.status(400).send({ message: "좋아요 실패했습니다." });
+>>>>>>> 6e3a67cd8c1a81797d2c67918ea61eac080debe8
   }
 };

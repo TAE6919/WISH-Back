@@ -2,8 +2,13 @@ import mongoose from 'mongoose';
 
 //db connection
 mongoose.connect(
+<<<<<<< HEAD
   'mongodb://yeonje:6350@0.0.0.0:27017/hangsta?authSource=admin',
   // 'mongodb://localhost:27017/hangsta',
+=======
+  // "mongodb://yeonje:6350@0.0.0.0:27017/hangsta?authSource=admin",
+  "mongodb://localhost:27017/hangsta",
+>>>>>>> 6e3a67cd8c1a81797d2c67918ea61eac080debe8
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
