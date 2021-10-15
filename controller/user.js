@@ -59,7 +59,7 @@ export const auth = async (req, res) => {
       .send({ result: 'failure', msg: '아이디 혹은 비밀번호가 틀립니다.' });
   const { _id } = user;
   const token = jwtToken(_id);
-  return res.status(200).send({ result: 'success', msg: '로그인 완료', token });
+  return res.status(200).send({ result: 'success',token });
 };
 
 
