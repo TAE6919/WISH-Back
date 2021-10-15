@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import { v4 as uuidv4 } from "uuid";
-
+import { logger } from "../logger/logger.js";
 // base64 형식 파일 디코딩
 const decodeBase64Image = (dataString) => {
   let matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
@@ -27,12 +27,12 @@ export const uploadImage = async (req, res, next) => {
   try {
     const result = await fs.writeFile(imageUrl, imageBuffer.data);
     console.log(result);
+    //성공하면 req에 새로운 객체 생성
+    req.imageUrl = { imageUrl };
+    next();
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     //에러 발생시, 작업 중단하고 클라이언트에게 메세지 전송
     return res.status(400).send({ msg: "파일 저장에 실패하였습니다." });
   }
-  //성공하면 req에 새로운 객체 생성
-  req.imageUrl = { imageUrl };
-  next();
 };

@@ -1,7 +1,7 @@
 import Comment from '../models/comments.js';
 import mongoose from 'mongoose';
 import { nowDate } from '../library/time.js';
-
+import { logger } from '../logger/logger.js';
 //댓글 저장하기
 export const createComments = (req, res) => {
   const { _id, nick } = req.user;
@@ -16,9 +16,10 @@ export const createComments = (req, res) => {
   });
   targetComment
     .save()
-    .then(res.sendStatus(200))
+    .then(res.status(200))
     .catch((error) => {
-      console.error(error), res.sendStatus(400);
+      logger.error(error),
+        res.status(400).json({ message: '댓글 저장 실패했습니다' });
     });
 };
 
@@ -31,8 +32,8 @@ export const getAllComments = async (req, res) => {
     });
     res.status(200).json({ allComments });
   } catch (error) {
-    console.error(error);
-    res.sendStatus(400);
+    logger.error(error);
+    res.status(400).json({ message: '댓글을 불러오는데 실패했습니다' });
   }
 };
 
@@ -48,8 +49,8 @@ export const editComments = async (req, res) => {
     );
     res.sendStatus(200);
   } catch (error) {
-    console.error(error);
-    res.sendStatus(400);
+    logger.error(error);
+    res.status(400).json({ message: '댓글 수정에 실패했습니다' });
   }
 };
 
@@ -64,7 +65,7 @@ export const deleteComments = async (req, res) => {
     });
     res.sendStatus(200);
   } catch (error) {
-    console.error(error);
-    res.sendStatus(400);
+    logger.error(error);
+    res.status(400).json({ message: '댓글 삭제에 실패했습니다' });
   }
 };

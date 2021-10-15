@@ -15,6 +15,7 @@ import {
 } from "../controller/comments.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { uploadImage } from "../middlewares/imageUploadMiddleware.js";
+
 const postingRouter = express.Router();
 
 postingRouter

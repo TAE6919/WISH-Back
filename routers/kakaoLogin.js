@@ -3,7 +3,7 @@ import User from '../models/users.js';
 const kakaoLoginRouter = express.Router();
 import passport from 'passport';
 import kakaoPassport from 'passport-kakao';
-
+import { logger } from '../logger/logger.js';
 const KakaoStrategy = kakaoPassport.Strategy;
 
 passport.serializeUser((user, done) => {
@@ -50,7 +50,7 @@ passport.use(
           return done(null, user);
         }
       } catch (error) {
-        console.log(error);
+        logger.error(error);
       }
     }
   )

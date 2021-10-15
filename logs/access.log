@@ -1,0 +1,4 @@
+
+error: undefined {"_message":"Comment validation failed","errors":{"postingID":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"ㄴㅇㄹ\" (type string) at path \"postingID\"","name":"CastError","path":"postingID","reason":{},"stringValue":"\"ㄴㅇㄹ\"","value":"ㄴㅇㄹ","valueType":"string"}},"timestamp":"2021-10-15 16:16:05"}
+error: undefined {"kind":"ObjectId","path":"postingID","reason":{},"stringValue":"\"ㄴㄹ\"","timestamp":"2021-10-15 16:17:05","value":"ㄴㄹ","valueType":"string"}
+error: undefined {"kind":"ObjectId","path":"postingID","reason":{},"stringValue":"\"ㅁㄴㅇㄻㄴㅇㄹㄴㅁㄹ\"","timestamp":"2021-10-15 16:18:05","value":"ㅁㄴㅇㄻㄴㅇㄹㄴㅁㄹ","valueType":"string"}
