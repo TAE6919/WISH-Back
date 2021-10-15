@@ -1,6 +1,21 @@
 import { Content, Like } from "../models/postings.js"
 import { jwtToken } from "../library/JWT.js"
 import { nowDate } from "../library/time.js"
+import { logger } from "../logger/logger.js"
+import moment from "moment"
+import mongoose from "mongoose"
+
+function formatDate(date) {
+  // var d = new Date(date),
+  const month = "" + (date.getMonth() + 1)
+  const day = "" + date.getDate()
+  const year = date.getFullYear()
+  if (month.length < 2) month = "0" + month
+  if (day.length < 2) day = "0" + day
+  const result = `${year}년 ${month}월 ${day}일`
+  console.log(result)
+  return result
+}
 
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
@@ -34,7 +49,29 @@ export const getAllPostings = (req, res) => {
   const sendResponse = async (JWTtoken) => {
     const token = JWTtoken || ""
     try {
-      const postings = await Content.find({}).sort({ createdAt: -1 })
+      // const postings = await Content.find({}).sort({ createdAt: -1 });
+      const postings = await Content.aggregate([
+        {
+          $project: {
+            hahahahaha: {
+              $dateToString: {
+                date: "$createdAt",
+                format: "%Y-%m-%d",
+              },
+            },
+            authorID: "$authorID",
+            authorName: "$authorName",
+            imageUrl: "$imageUrl",
+            text: "$text",
+            Like: "$Like",
+          },
+        },
+        {
+          $sort: {
+            createdAt: -1,
+          },
+        },
+      ])
       if (token) {
         return res.status(200).json({ postings, token })
       }
