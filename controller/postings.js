@@ -24,13 +24,8 @@ export const postPostings = async (req, res) => {
     await Content.create(posting);
     return res.sendStatus(200);
   } catch (err) {
-<<<<<<< HEAD
-    logger.error(err);
-    return res.sendStatus(400);
-=======
     console.log(err);
-    return res.status(400).send({ message: "게시물 생성 실패하였습니다." });
->>>>>>> d12de0927c5b3bedeef3b3946f2146a3eb8dd6c2
+    return res.status(400).send({ message: '게시물 생성 실패하였습니다.' });
   }
 };
 
@@ -47,15 +42,10 @@ export const getAllPostings = (req, res) => {
       }
       return res.status(200).json({ postings });
     } catch (err) {
-<<<<<<< HEAD
       logger.error(err);
-      return res.sendStatus(400);
-=======
-      console.log(err);
       return res
         .status(400)
-        .send({ message: "전체 게시물 조회 실패하였습니다." });
->>>>>>> d12de0927c5b3bedeef3b3946f2146a3eb8dd6c2
+        .send({ message: '전체 게시물 조회 실패하였습니다.' });
     }
   };
 
@@ -76,15 +66,10 @@ export const getOnePosting = async (req, res) => {
     const posting = await Content.findById(postingId);
     return res.status(200).json(posting);
   } catch (err) {
-<<<<<<< HEAD
     logger.error(err);
-    return res.sendStatus(400);
-=======
-    console.log(err);
     return res
       .status(400)
-      .send({ message: "해당 게시물 조회에 실패했습니다." });
->>>>>>> d12de0927c5b3bedeef3b3946f2146a3eb8dd6c2
+      .send({ message: '해당 게시물 조회에 실패했습니다.' });
   }
 };
 
@@ -99,15 +84,10 @@ export const patchPosting = async (req, res) => {
     const posting = await Content.findById(postingId);
     // 토큰 id랑 해당 게시물의 작성자 id 비교
     if (!posting.authorID.equals(_id)) {
-<<<<<<< Updated upstream
       console.log('사용자 일치하지 않음');
-      return res.sendStatus(400);
-=======
-      console.log("사용자 일치하지 않음");
       return res
         .status(400)
-        .send({ message: "본인의 게시물만 수정할 수 있습니다." });
->>>>>>> Stashed changes
+        .send({ message: '본인의 게시물만 수정할 수 있습니다.' });
     }
 
     posting.imageUrl = imageUrl;
@@ -120,13 +100,8 @@ export const patchPosting = async (req, res) => {
 
     return res.sendStatus(200);
   } catch (err) {
-<<<<<<< HEAD
     logger.error(err);
     return res.sendStatus(400);
-=======
-    console.log(err);
-    return res.status(400).send({ message: "게시물 수정 실패했습니다." });
->>>>>>> d12de0927c5b3bedeef3b3946f2146a3eb8dd6c2
   }
 };
 
@@ -143,16 +118,8 @@ export const deletePosting = async (req, res) => {
     await Content.deleteOne(posting);
     return res.sendStatus(200);
   } catch (err) {
-<<<<<<< HEAD
     logger.error(err);
-=======
-    console.log(err);
-<<<<<<< Updated upstream
->>>>>>> d12de0927c5b3bedeef3b3946f2146a3eb8dd6c2
-    return res.sendStatus(400);
-=======
-    return res.status(400).send({ message: "게시물 삭제 실패했습니다." });
->>>>>>> Stashed changes
+    return res.status(400).send({ message: '게시물 삭제 실패했습니다.' });
   }
 };
 
@@ -195,12 +162,7 @@ export const postLike = async (req, res) => {
     const likeCount = posting.Like.length;
     return res.status(200).send({ posting, likeCount });
   } catch (err) {
-<<<<<<< HEAD
     logger.error(err);
-    return res.sendStatus(400);
-=======
-    console.log(err);
-    return res.status(400).send({ message: "좋아요 실패했습니다." });
->>>>>>> d12de0927c5b3bedeef3b3946f2146a3eb8dd6c2
+    return res.status(400).send({ message: '좋아요 실패했습니다.' });
   }
 };

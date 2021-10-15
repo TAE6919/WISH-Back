@@ -16,7 +16,7 @@ export const createComments = (req, res) => {
   });
   targetComment
     .save()
-    .then(res.status(200))
+    .then(res.sendStatus(200))
     .catch((error) => {
       logger.error(error),
         res.status(400).json({ message: '댓글 저장 실패했습니다' });
