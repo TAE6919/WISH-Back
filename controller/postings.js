@@ -103,6 +103,7 @@ export const getOnePosting = async (req, res) => {
 
 // 특정 게시물의 일부 속성 수정
 export const patchPosting = async (req, res) => {
+  const [toDate] = new Date(nowDate()).toISOString().split('T');
   const { postingId } = req.params;
   const { _id } = req.user;
   const { text } = req.body;
@@ -117,7 +118,7 @@ export const patchPosting = async (req, res) => {
         .status(400)
         .send({ message: '본인의 게시물만 수정할 수 있습니다.' });
     }
-
+    posting.createdAt = toDate;
     posting.text = text;
 
     await posting.save();

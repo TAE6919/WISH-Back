@@ -4,15 +4,18 @@ import { nowDate } from '../library/time.js';
 import { logger } from '../logger/logger.js';
 //댓글 저장하기
 export const createComments = (req, res) => {
+  const [toDate] = new Date(nowDate()).toISOString().split('T');
+  const sortNumber = await Comment.count();
   const { _id, nick } = req.user;
   const { postingId } = req.params;
   const { text } = req.body;
   const targetComment = new Comment({
     postingID: postingId,
     authorID: _id,
+    sort: sortNumber,
     authorName: nick,
     text,
-    createdAt: nowDate(),
+    createdAt: toDate,
   });
   targetComment
     .save()
@@ -39,13 +42,15 @@ export const getAllComments = async (req, res) => {
 
 //댓글 수정하기
 export const editComments = async (req, res) => {
+  const [toDate] = new Date(nowDate()).toISOString().split('T');
+
   const { _id } = req.user;
   const { postingId } = req.params;
   const { text } = req.body;
   try {
     await Comment.findOneAndUpdate(
       { postingID: postingId, authorID: _id },
-      { text, createdAt: nowDate() }
+      { text, createdAt: toDate }
     );
     res.sendStatus(200);
   } catch (error) {
