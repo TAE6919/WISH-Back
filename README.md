@@ -1,4 +1,7 @@
 # Hangstagram 👩‍💻
+![Uploading 2021-10-16-15-40-37.jpeg…](https://s3.ap-northeast-2.amazonaws.com/erionrookie.shop/wish1.f1085eea.jpg)
+
+
 
 # summary 📖
 항해99 두번째 "미니프로젝트"입니다!
@@ -39,12 +42,17 @@ passport-kakao를 이용한 소셜 로그인 🔑
 게시글 알람 ❤ 
 
 # Server Developers
-https://github.com/yeonjeseo 🖥
+* 김기태 https://github.com/TAE6919 🖥
 
-https://github.com/ebohoon 🖥
+* 서연제 https://github.com/yeonjeseo 🖥
 
-https://github.com/TAE6919 🖥
+* 강지훈 https://github.com/ebohoon 🖥
+# Front Developers
+* 김준형 https://github.com/erionRK621 🖥
 
+* 김범수 https://github.com/kimbumsoo0820 🖥
+
+* 강지훈 https://github.com/kzhxxn 🖥
 
 
 
