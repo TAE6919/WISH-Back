@@ -38,38 +38,12 @@ export const postPostings = async (req, res) => {
 
 // 게시물 전체 조회(READ ALL)
 export const getAllPostings = async (req, res) => {
-  const { _id, nick } = req.user;
-  if (!_id) {
-    try {
-      const postings = await Content.find({}).sort({ sort: -1 }).lean();
-      const promiseArr = postings.map(async (firstArray) => {
-        firstArray.likeStatus = false;
-        const cntPromise = Comment.find({
-          postingID: firstArray._id,
-        })
-          .then((res) => {
-            return res.length;
-          })
-          .catch((err) => console.log(err));
+  // const { _id, nick } = req.user;
 
-        const result = await cntPromise;
-        firstArray.commentsCnt = result;
-        return firstArray;
-      });
-      const newArray = await Promise.all(promiseArr);
-      return res.status(200).json({ newArray });
-    } catch (error) {
-      logger.error(error);
-      return res
-        .status(400)
-        .send({ message: "전체 게시물 조회 실패하였습니다." });
-    }
-  }
   try {
-    const stringID = _id.toString();
-    console.log(stringID);
     const postings = await Content.find({}).sort({ sort: -1 }).lean();
     const promiseArr = postings.map(async (firstArray) => {
+      // firstArray.likeStatus = false;
       const cntPromise = Comment.find({
         postingID: firstArray._id,
       })
@@ -80,34 +54,60 @@ export const getAllPostings = async (req, res) => {
 
       const result = await cntPromise;
       firstArray.commentsCnt = result;
-
-      if (firstArray.Like.length == 0) {
-        firstArray.likeStatus = false;
-      } else {
-        for (let i = 0; i < firstArray.Like.length; i++) {
-          // 하나라도 매치되는 것이 있으면 있으면 True!
-          if (firstArray.Like[i]._id.toString().match(stringID)) {
-            firstArray.likeStatus = true;
-            return firstArray;
-          } else if (
-            firstArray.Like[i]._id.toString().match(stringID) == null
-          ) {
-            firstArray.likeStatus = false;
-          }
-        }
-      }
       return firstArray;
     });
     const newArray = await Promise.all(promiseArr);
-
-    console.log(newArray);
     return res.status(200).json({ newArray });
-  } catch (err) {
-    logger.error(err);
+  } catch (error) {
+    logger.error(error);
     return res
       .status(400)
       .send({ message: "전체 게시물 조회 실패하였습니다." });
   }
+
+  // try {
+  //   const stringID = _id.toString();
+  //   console.log(stringID);
+  //   const postings = await Content.find({}).sort({ sort: -1 }).lean();
+  //   const promiseArr = postings.map(async (firstArray) => {
+  //     const cntPromise = Comment.find({
+  //       postingID: firstArray._id,
+  //     })
+  //       .then((res) => {
+  //         return res.length;
+  //       })
+  //       .catch((err) => console.log(err));
+
+  //     const result = await cntPromise;
+  //     firstArray.commentsCnt = result;
+
+  //     if (firstArray.Like.length == 0) {
+  //       firstArray.likeStatus = false;
+  //     } else {
+  //       for (let i = 0; i < firstArray.Like.length; i++) {
+  //         // 하나라도 매치되는 것이 있으면 있으면 True!
+  //         if (firstArray.Like[i]._id.toString().match(stringID)) {
+  //           firstArray.likeStatus = true;
+  //           return firstArray;
+  //         } else if (
+  //           firstArray.Like[i]._id.toString().match(stringID) == null
+  //         ) {
+  //           firstArray.likeStatus = false;
+  //         }
+  //       }
+  //     }
+  //     return firstArray;
+  //   });
+  //   const newArray = await Promise.all(promiseArr);
+
+  //   console.log(newArray);
+  //   return res.status(200).json({ newArray });
+  // } catch (err) {
+  //   logger.error(err);
+  //   return res
+  //     .status(400)
+  //     .send({ message: "전체 게시물 조회 실패하였습니다." });
+  // }
 };
 
 //특정 게시물 조회 (READ ONE)

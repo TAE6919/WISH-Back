@@ -13,17 +13,14 @@ import {
   editComments,
   deleteComments,
 } from "../controller/comments.js";
-import {
-  checkLikeUser,
-  authMiddleware,
-} from "../middlewares/authMiddleware.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { uploadImage } from "../middlewares/imageUploadMiddleware.js";
 
 const postingRouter = express.Router();
 
 postingRouter
   .route("/")
-  .get(checkLikeUser, getAllPostings)
+  .get(/*checkLikeUser,*/ getAllPostings)
   .post(authMiddleware, uploadImage, postPostings);
 
 postingRouter
