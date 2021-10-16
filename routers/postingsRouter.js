@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   getAllPostings,
   postPostings,
@@ -6,41 +6,41 @@ import {
   patchPosting,
   deletePosting,
   postLike,
-} from '../controller/postings.js';
+} from "../controller/postings.js";
 import {
   createComments,
   getAllComments,
   editComments,
   deleteComments,
-} from '../controller/comments.js';
+} from "../controller/comments.js";
 import {
   checkLikeUser,
   authMiddleware,
-} from '../middlewares/authMiddleware.js';
-import { uploadImage } from '../middlewares/imageUploadMiddleware.js';
+} from "../middlewares/authMiddleware.js";
+import { uploadImage } from "../middlewares/imageUploadMiddleware.js";
 
 const postingRouter = express.Router();
 
 postingRouter
-  .route('/')
+  .route("/")
   .get(checkLikeUser, getAllPostings)
-  .post(authMiddleware, /*uploadImage,*/ postPostings);
+  .post(authMiddleware, uploadImage, postPostings);
 
 postingRouter
-  .route('/:postingId')
+  .route("/:postingId")
   .get(getOnePosting)
   .delete(authMiddleware, deletePosting)
   .patch(authMiddleware, patchPosting);
 
-postingRouter.route('/:postingId/like').post(authMiddleware, postLike);
+postingRouter.route("/:postingId/like").post(authMiddleware, postLike);
 
 postingRouter
-  .route('/:postingId/comments')
+  .route("/:postingId/comments")
   .post(authMiddleware, createComments)
   .get(getAllComments)
   .patch(authMiddleware, editComments)
   .delete(authMiddleware, deleteComments);
 
-postingRouter.route('/:id/comments');
+postingRouter.route("/:id/comments");
 
 export default postingRouter;

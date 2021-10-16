@@ -1,17 +1,17 @@
-import { Content, Like } from '../models/postings.js';
-import { jwtToken } from '../library/JWT.js';
-import { nowDate } from '../library/time.js';
-import { logger } from '../logger/logger.js';
-import db from 'mongoose';
-import { createTestScheduler } from '@jest/core';
+import { Content, Like } from "../models/postings.js";
+import { jwtToken } from "../library/JWT.js";
+import { nowDate } from "../library/time.js";
+import { logger } from "../logger/logger.js";
+import db from "mongoose";
+import { createTestScheduler } from "@jest/core";
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
   // content-type : multipart/form-data 라서 req.body가 이상하게 옴
   // const reqBody = JSON.parse(JSON.stringify(req.body));
-  // const { imageUrl } = req.imageUrl;
+  const { imageUrl } = req.imageUrl;
   const { text } = req.body;
   const { _id, nick } = req.user;
-  const [toDate] = new Date(nowDate()).toISOString().split('T');
+  const [toDate] = new Date(nowDate()).toISOString().split("T");
 
   const sortNumber = await Content.count();
 
@@ -22,7 +22,7 @@ export const postPostings = async (req, res) => {
       authorID: _id,
       sort: sortNumber + 1,
       authorName: nick,
-      imageUrl: 'ㄴㅇㄹ',
+      imageUrl: imageUrl,
       text,
       createdAt: toDate,
     };
@@ -31,7 +31,7 @@ export const postPostings = async (req, res) => {
     return res.sendStatus(200);
   } catch (err) {
     console.log(err);
-    return res.status(400).send({ message: '게시물 생성 실패하였습니다.' });
+    return res.status(400).send({ message: "게시물 생성 실패하였습니다." });
   }
 };
 
@@ -50,7 +50,7 @@ export const getAllPostings = async (req, res) => {
       logger.error(error);
       return res
         .status(400)
-        .send({ message: '전체 게시물 조회 실패하였습니다.' });
+        .send({ message: "전체 게시물 조회 실패하였습니다." });
     }
   }
   try {
@@ -82,7 +82,7 @@ export const getAllPostings = async (req, res) => {
     logger.error(err);
     return res
       .status(400)
-      .send({ message: '전체 게시물 조회 실패하였습니다.' });
+      .send({ message: "전체 게시물 조회 실패하였습니다." });
   }
 };
 
@@ -97,13 +97,13 @@ export const getOnePosting = async (req, res) => {
     logger.error(err);
     return res
       .status(400)
-      .send({ message: '해당 게시물 조회에 실패했습니다.' });
+      .send({ message: "해당 게시물 조회에 실패했습니다." });
   }
 };
 
 // 특정 게시물의 일부 속성 수정
 export const patchPosting = async (req, res) => {
-  const [toDate] = new Date(nowDate()).toISOString().split('T');
+  const [toDate] = new Date(nowDate()).toISOString().split("T");
   const { postingId } = req.params;
   const { _id } = req.user;
   const { text } = req.body;
@@ -113,10 +113,10 @@ export const patchPosting = async (req, res) => {
     const posting = await Content.findById(postingId);
     // 토큰 id랑 해당 게시물의 작성자 id 비교
     if (!posting.authorID.equals(_id)) {
-      console.log('사용자 일치하지 않음');
+      console.log("사용자 일치하지 않음");
       return res
         .status(400)
-        .send({ message: '본인의 게시물만 수정할 수 있습니다.' });
+        .send({ message: "본인의 게시물만 수정할 수 있습니다." });
     }
     posting.createdAt = toDate;
     posting.text = text;
@@ -147,7 +147,7 @@ export const deletePosting = async (req, res) => {
     return res.sendStatus(200);
   } catch (err) {
     logger.error(err);
-    return res.status(400).send({ message: '게시물 삭제 실패했습니다.' });
+    return res.status(400).send({ message: "게시물 삭제 실패했습니다." });
   }
 };
 
@@ -197,6 +197,6 @@ export const postLike = async (req, res) => {
     // 좋아요 표시할 땐 배열 길이를 찍으면 됨.
   } catch (err) {
     logger.error(err);
-    return res.status(400).send({ message: '좋아요 실패했습니다.' });
+    return res.status(400).send({ message: "좋아요 실패했습니다." });
   }
 };
