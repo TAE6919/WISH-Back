@@ -1,10 +1,10 @@
-import Comment from '../models/comments.js';
-import mongoose from 'mongoose';
-import { nowDate } from '../library/time.js';
-import { logger } from '../logger/logger.js';
+import Comment from "../models/comments.js";
+import mongoose from "mongoose";
+import { nowDate } from "../library/time.js";
+import { logger } from "../logger/logger.js";
 //댓글 저장하기
-export const createComments = (req, res) => {
-  const [toDate] = new Date(nowDate()).toISOString().split('T');
+export const createComments = async (req, res) => {
+  const [toDate] = new Date(nowDate()).toISOString().split("T");
   const sortNumber = await Comment.count();
   const { _id, nick } = req.user;
   const { postingId } = req.params;
@@ -22,7 +22,7 @@ export const createComments = (req, res) => {
     .then(res.sendStatus(200))
     .catch((error) => {
       logger.error(error),
-        res.status(400).json({ message: '댓글 저장 실패했습니다' });
+        res.status(400).json({ message: "댓글 저장 실패했습니다" });
     });
 };
 
@@ -36,13 +36,13 @@ export const getAllComments = async (req, res) => {
     res.status(200).json({ allComments });
   } catch (error) {
     logger.error(error);
-    res.status(400).json({ message: '댓글을 불러오는데 실패했습니다' });
+    res.status(400).json({ message: "댓글을 불러오는데 실패했습니다" });
   }
 };
 
 //댓글 수정하기
 export const editComments = async (req, res) => {
-  const [toDate] = new Date(nowDate()).toISOString().split('T');
+  const [toDate] = new Date(nowDate()).toISOString().split("T");
 
   const { _id } = req.user;
   const { postingId } = req.params;
@@ -55,7 +55,7 @@ export const editComments = async (req, res) => {
     res.sendStatus(200);
   } catch (error) {
     logger.error(error);
-    res.status(400).json({ message: '댓글 수정에 실패했습니다' });
+    res.status(400).json({ message: "댓글 수정에 실패했습니다" });
   }
 };
 
@@ -63,6 +63,7 @@ export const editComments = async (req, res) => {
 export const deleteComments = async (req, res) => {
   const { _id } = req.user;
   const { postingId } = req.params;
+
   try {
     await Comment.findOneAndRemove({
       postingID: postingId,
@@ -71,6 +72,6 @@ export const deleteComments = async (req, res) => {
     res.sendStatus(200);
   } catch (error) {
     logger.error(error);
-    res.status(400).json({ message: '댓글 삭제에 실패했습니다' });
+    res.status(400).json({ message: "댓글 삭제에 실패했습니다" });
   }
 };
