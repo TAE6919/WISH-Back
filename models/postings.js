@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const likeSchema = new Schema({
-  likedUser: { type: Schema.Types.ObjectId },
+  _id: Schema.Types.ObjectId,
 });
 
 const contentSchema = new Schema({

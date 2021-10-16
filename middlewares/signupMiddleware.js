@@ -5,14 +5,14 @@ export const validateSignUp = async (req, res, next) => {
 
   try {
     //회원가입 절차일때만 서로 포함하는지 확인
-    if (nick && confirmPassword) {
-      // nick, password 서로 포함 여부
-      const isIncluded = nick.includes(password) || password.includes(nick);
-      if (isIncluded)
-        return res
-          .status(400)
-          .send({ msg: '닉네임 과 패스워드에 중복이 있습니다.' });
-    }
+    // if (nick && confirmPassword) {
+    //   // nick, password 서로 포함 여부
+    //   const isIncluded = nick.includes(password) || password.includes(nick);
+    //   if (isIncluded)
+    //     return res
+    //       .status(400)
+    //       .send({ msg: '닉네임 과 패스워드에 중복이 있습니다.' });
+    // }
 
     const value = await signUpSchema.validateAsync({
       nick,

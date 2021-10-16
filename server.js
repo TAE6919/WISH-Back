@@ -7,19 +7,13 @@ import usersRouter from './routers/usersRouter.js';
 import kakaoLoginRouter from './routers/kakaoLogin.js';
 import session from 'express-session';
 import cors from 'cors';
-import cookieParser from 'cookie-parser';
+
 import db from './db.js';
 
 const app = express();
 const PORT = 4000;
 const swaggerDocument = yamljs.load('./api/api.yaml');
 
-//카카오 로그인 테스트
-app.set('views', './views');
-app.set('view engine', 'ejs');
-app.get('/', (req, res) => {
-  res.render('kakao');
-});
 app.use(cors());
 app.use(
   session({
@@ -32,15 +26,13 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cookieParser());
+
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 
 //업로드된 파일 static으로 올리기
 app.use('/uploads', express.static('uploads'));
-app.get('/main', (req, res) => {
-  res.render('main');
-});
+
 //middle ware
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/postings', postingsRouter);

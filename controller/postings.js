@@ -2,12 +2,12 @@ import { Content, Like } from '../models/postings.js';
 import { jwtToken } from '../library/JWT.js';
 import { nowDate } from '../library/time.js';
 import { logger } from '../logger/logger.js';
-
+import db from 'mongoose';
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
   // content-type : multipart/form-data 라서 req.body가 이상하게 옴
   // const reqBody = JSON.parse(JSON.stringify(req.body));
-  const { imageUrl } = req.imageUrl;
+  // const { imageUrl } = req.imageUrl;
   const { text } = req.body;
   const { _id, nick } = req.user;
 
@@ -17,7 +17,7 @@ export const postPostings = async (req, res) => {
     const posting = {
       authorID: _id,
       authorName: nick,
-      imageUrl,
+      imageUrl: 'ㄴㅇㄹ',
       text,
       createdAt: nowDate(),
     };
@@ -31,52 +31,57 @@ export const postPostings = async (req, res) => {
 };
 
 // 게시물 전체 조회(READ ALL)
-export const getAllPostings = (req, res) => {
-  const sendResponse = async (JWTtoken) => {
-    const token = JWTtoken || '';
-    try {
-      // const postings = await Content.find({}).sort({ createdAt: -1 });
-      const postings = await Content.aggregate([
-        {
-          $project: {
-            hahahahaha: {
-              $dateToString: {
-                date: '$createdAt',
-                format: '%Y-%m-%d',
-              },
-            },
-            authorID: '$authorID',
-            authorName: '$authorName',
-            imageUrl: '$imageUrl',
-            text: '$text',
-            Like: '$Like',
-          },
-        },
-        {
-          $sort: {
-            createdAt: -1,
-          },
-        },
-      ]);
-      if (token) {
-        return res.status(200).json({ postings, token });
+export const getAllPostings = async (req, res) => {
+  try {
+    const { _id, nick } = req.user;
+
+    const postings = await Content.find({}).sort({ createdAt: -1 });
+
+    let LikeUser = [];
+
+    const checkLikeUser = postings.forEach((data) => {
+      if (data.Like.id(_id)) {
+        data.likeStatus = false;
+
+        LikeUser.push(data);
+      } else {
+        data.likeStatus = false;
+        LikeUser.push(data);
       }
+    });
+    console.log(LikeUser);
+    // console.log(notLikeUser);
 
-      return res.status(200).json({ postings });
-    } catch (err) {
-      logger.error(err);
-      return res
-        .status(400)
-        .send({ message: '전체 게시물 조회 실패하였습니다.' });
-    }
-  };
+    // const stringID = _id.toString();
+    // const postings = await Content.aggregate([
+    //   {
+    //     $project: {
+    //       createdAt: {
+    //         $dateToString: {
+    //           date: '$createdAt',
+    //           format: '%Y-%m-%d',
+    //         },
+    //       },
+    //       authorID: '$authorID',
+    //       authorName: '$authorName',
+    //       imageUrl: '$imageUrl',
+    //       text: '$text',
+    //       Like: '$Like',
+    //     },
+    //   },
+    //   {
+    //     $sort: {
+    //       createdAt: -1,
+    //     },
+    //   },
+    // ]);
 
-  if (req.session.passport.user) {
-    const { _id, nick } = req.session.passport.user;
-    const token = jwtToken(_id);
-    sendResponse(token);
-  } else {
-    sendResponse();
+    return res.status(200).json({ postings });
+  } catch (err) {
+    logger.error(err);
+    return res
+      .status(400)
+      .send({ message: '전체 게시물 조회 실패하였습니다.' });
   }
 };
 
@@ -159,7 +164,7 @@ export const postLike = async (req, res) => {
         { _id: postingId },
         {
           Like: {
-            $elemMatch: { likedUser: _id },
+            $elemMatch: { _id },
           },
         },
       ],
@@ -168,20 +173,26 @@ export const postLike = async (req, res) => {
     if (result.length === 0) {
       await Content.updateOne(posting, {
         $push: {
-          Like: { likedUser: _id },
+          Like: { _id },
         },
       });
+      let nowLike = await Content.findById(postingId).lean();
+      nowLike.likeStatus = true;
+
+      return res.status(200).send({ nowLike });
     } else {
       await Content.updateOne(posting, {
         $pull: {
-          Like: { likedUser: _id },
+          Like: { _id },
         },
       });
+      let nowLike = await Content.findById(postingId).lean();
+      nowLike.likeStatus = false;
+
+      return res.status(200).send({ nowLike });
     }
 
     // 좋아요 표시할 땐 배열 길이를 찍으면 됨.
-    const likeCount = posting.Like.length;
-    return res.status(200).send({ posting, likeCount });
   } catch (err) {
     logger.error(err);
     return res.status(400).send({ message: '좋아요 실패했습니다.' });
