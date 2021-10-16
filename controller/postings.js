@@ -42,10 +42,21 @@ export const getAllPostings = async (req, res) => {
   if (!_id) {
     try {
       const postings = await Content.find({}).sort({ sort: -1 }).lean();
-      const newArray = postings.map((firstArray) => {
+      const promiseArr = postings.map(async (firstArray) => {
         firstArray.likeStatus = false;
+        const cntPromise = Comment.find({
+          postingID: firstArray._id,
+        })
+          .then((res) => {
+            return res.length;
+          })
+          .catch((err) => console.log(err));
+
+        const result = await cntPromise;
+        firstArray.commentsCnt = result;
         return firstArray;
       });
+      const newArray = await Promise.all(promiseArr);
       return res.status(200).json({ newArray });
     } catch (error) {
       logger.error(error);
@@ -58,8 +69,18 @@ export const getAllPostings = async (req, res) => {
     const stringID = _id.toString();
     console.log(stringID);
     const postings = await Content.find({}).sort({ sort: -1 }).lean();
+    const promiseArr = postings.map(async (firstArray) => {
+      const cntPromise = Comment.find({
+        postingID: firstArray._id,
+      })
+        .then((res) => {
+          return res.length;
+        })
+        .catch((err) => console.log(err));
 
-    const newArray = postings.map((firstArray) => {
+      const result = await cntPromise;
+      firstArray.commentsCnt = result;
+
       if (firstArray.Like.length == 0) {
         firstArray.likeStatus = false;
       } else {
@@ -77,7 +98,9 @@ export const getAllPostings = async (req, res) => {
       }
       return firstArray;
     });
+    const newArray = await Promise.all(promiseArr);
 
+    console.log(newArray);
     return res.status(200).json({ newArray });
   } catch (err) {
     logger.error(err);
