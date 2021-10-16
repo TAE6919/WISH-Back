@@ -65,7 +65,10 @@ kakaoLoginRouter.get(
   }),
   (req, res) => {
     // 로그인에 성공했을 경우, 다음 라우터가 실행된다
-    res.redirect('http://kbumsoo.s3-website.ap-northeast-2.amazonaws.com/');
+
+    res.redirect(
+      'http://kbumsoo.s3-website.ap-northeast-2.amazonaws.com/kakao?hi=1'
+    );
   }
 );
 
