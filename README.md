@@ -46,7 +46,7 @@ passport-kakao를 이용한 소셜 로그인 🔑
 
 * 서연제 https://github.com/yeonjeseo 🖥
 
-* 강지훈 https://github.com/ebohoon 🖥
+* 이보훈 https://github.com/ebohoon 🖥
 # Front Developers
 * 김준형 https://github.com/erionRK621 🖥
 
