@@ -2,7 +2,7 @@ import { Content, Like } from "../models/postings.js";
 import { jwtToken } from "../library/JWT.js";
 import { nowDate } from "../library/time.js";
 import { logger } from "../logger/logger.js";
-import db from "mongoose";
+// import db from "mongoose";
 import { createTestScheduler } from "@jest/core";
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
@@ -13,16 +13,16 @@ export const postPostings = async (req, res) => {
   const { _id, nick } = req.user;
   const [toDate] = new Date(nowDate()).toISOString().split("T");
 
-  const sortNumber = await Content.count();
-
   try {
+    const sortNumber = await Content.count();
+
     // 사용자 조회 - nick을 가져오기 위해 필요
     // const user = await User.findById(userId);
     const posting = {
       authorID: _id,
       sort: sortNumber + 1,
       authorName: nick,
-      imageUrl: imageUrl,
+      imageUrl,
       text,
       createdAt: toDate,
     };
@@ -43,6 +43,9 @@ export const getAllPostings = async (req, res) => {
       const postings = await Content.find({}).sort({ sort: -1 }).lean();
       const newArray = postings.map((firstArray) => {
         firstArray.likeStatus = false;
+        firstArray.likeCnt = (
+          await Comment.find({ postingId: firstArray._id })
+        ).length;
         return firstArray;
       });
       return res.status(200).json({ newArray });
@@ -61,16 +64,25 @@ export const getAllPostings = async (req, res) => {
     const newArray = postings.map((firstArray) => {
       if (firstArray.Like.length == 0) {
         firstArray.likeStatus = false;
+        firstArray.likeCnt = (
+          await Comment.find({ postingId: firstArray._id })
+        ).length;
       } else {
         for (let i = 0; i < firstArray.Like.length; i++) {
           // 하나라도 매치되는 것이 있으면 있으면 True!
           if (firstArray.Like[i]._id.toString().match(stringID)) {
             firstArray.likeStatus = true;
+            firstArray.likeCnt = (
+              await Comment.find({ postingId: firstArray._id })
+            ).length;
             return firstArray;
           } else if (
             firstArray.Like[i]._id.toString().match(stringID) == null
           ) {
             firstArray.likeStatus = false;
+            firstArray.likeCnt = (
+              await Comment.find({ postingId: firstArray._id })
+            ).length;
           }
         }
       }
