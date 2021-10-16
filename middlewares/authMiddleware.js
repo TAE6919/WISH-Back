@@ -28,6 +28,14 @@ export const authMiddleware = async (req, res, next) => {
 
 export const checkLikeUser = async (req, res, next) => {
   const { authorization } = req.headers;
+  if (!authorization) {
+    req.user = {
+      _id: null,
+      nick: 'guest',
+    };
+
+    return next();
+  }
   const [tokenType, tokenValue] = authorization.split(' ');
   const { userId } = jwt.verify(tokenValue, SECRET_KET);
   try {

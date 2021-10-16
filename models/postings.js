@@ -9,6 +9,10 @@ const likeSchema = new Schema({
 const contentSchema = new Schema({
   authorID: { type: Schema.Types.ObjectId },
 
+  sort: {
+    type: Number,
+  },
+
   authorName: {
     type: String,
     required: true,
@@ -24,7 +28,7 @@ const contentSchema = new Schema({
   },
 
   createdAt: {
-    type: Date,
+    type: String,
   },
 
   Like: [likeSchema],

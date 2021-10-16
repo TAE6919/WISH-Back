@@ -3,6 +3,7 @@ import { jwtToken } from '../library/JWT.js';
 import { nowDate } from '../library/time.js';
 import { logger } from '../logger/logger.js';
 import db from 'mongoose';
+import { createTestScheduler } from '@jest/core';
 // 게시물 생성(CREATE)
 export const postPostings = async (req, res) => {
   // content-type : multipart/form-data 라서 req.body가 이상하게 옴
@@ -10,16 +11,20 @@ export const postPostings = async (req, res) => {
   // const { imageUrl } = req.imageUrl;
   const { text } = req.body;
   const { _id, nick } = req.user;
+  const [toDate] = new Date(nowDate()).toISOString().split('T');
+
+  const sortNumber = await Content.count();
 
   try {
     // 사용자 조회 - nick을 가져오기 위해 필요
     // const user = await User.findById(userId);
     const posting = {
       authorID: _id,
+      sort: sortNumber + 1,
       authorName: nick,
       imageUrl: 'ㄴㅇㄹ',
       text,
-      createdAt: nowDate(),
+      createdAt: toDate,
     };
 
     await Content.create(posting);
@@ -32,51 +37,47 @@ export const postPostings = async (req, res) => {
 
 // 게시물 전체 조회(READ ALL)
 export const getAllPostings = async (req, res) => {
+  const { _id, nick } = req.user;
+  if (!_id) {
+    try {
+      const postings = await Content.find({}).sort({ sort: -1 }).lean();
+      const newArray = postings.map((firstArray) => {
+        firstArray.likeStatus = false;
+        return firstArray;
+      });
+      return res.status(200).json({ newArray });
+    } catch (error) {
+      logger.error(error);
+      return res
+        .status(400)
+        .send({ message: '전체 게시물 조회 실패하였습니다.' });
+    }
+  }
   try {
-    const { _id, nick } = req.user;
+    const stringID = _id.toString();
+    console.log(stringID);
+    const postings = await Content.find({}).sort({ sort: -1 }).lean();
 
-    const postings = await Content.find({}).sort({ createdAt: -1 });
-
-    let LikeUser = [];
-
-    const checkLikeUser = postings.forEach((data) => {
-      if (data.Like.id(_id)) {
-        data.likeStatus = false;
-
-        LikeUser.push(data);
+    const newArray = postings.map((firstArray) => {
+      if (firstArray.Like.length == 0) {
+        firstArray.likeStatus = false;
       } else {
-        data.likeStatus = false;
-        LikeUser.push(data);
+        for (let i = 0; i < firstArray.Like.length; i++) {
+          // 하나라도 매치되는 것이 있으면 있으면 True!
+          if (firstArray.Like[i]._id.toString().match(stringID)) {
+            firstArray.likeStatus = true;
+            return firstArray;
+          } else if (
+            firstArray.Like[i]._id.toString().match(stringID) == null
+          ) {
+            firstArray.likeStatus = false;
+          }
+        }
       }
+      return firstArray;
     });
-    console.log(LikeUser);
-    // console.log(notLikeUser);
 
-    // const stringID = _id.toString();
-    // const postings = await Content.aggregate([
-    //   {
-    //     $project: {
-    //       createdAt: {
-    //         $dateToString: {
-    //           date: '$createdAt',
-    //           format: '%Y-%m-%d',
-    //         },
-    //       },
-    //       authorID: '$authorID',
-    //       authorName: '$authorName',
-    //       imageUrl: '$imageUrl',
-    //       text: '$text',
-    //       Like: '$Like',
-    //     },
-    //   },
-    //   {
-    //     $sort: {
-    //       createdAt: -1,
-    //     },
-    //   },
-    // ]);
-
-    return res.status(200).json({ postings });
+    return res.status(200).json({ newArray });
   } catch (err) {
     logger.error(err);
     return res
