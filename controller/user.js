@@ -3,14 +3,6 @@ import bcrypt from 'bcrypt';
 import { jwtToken } from '../library/JWT.js';
 import { Content } from '../models/postings.js';
 import { logger } from '../logger/logger.js';
-// export const getSignup = (req, res) => {
-
-//   return res.render("signup")
-// }
-
-// export const getLogin = (req, res) => {
-//   return res.render("login")
-// }
 
 export const signup = async (req, res) => {
   const { nick, email, password, confirmPassword } = req.body;
@@ -71,11 +63,13 @@ export const auth = async (req, res) => {
 };
 
 export const getMe = async (req, res) => {
-  const { email, nick } = req.user;
+  const { email, nick, _id } = req.user;
+  console.log(req.user);
 
   return res.status(200).send({
     email,
     nick,
+    _id,
   });
 };
 
